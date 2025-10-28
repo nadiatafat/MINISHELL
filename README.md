@@ -177,10 +177,4 @@ Mécanisme technique
 1.	Lexer : Détecte les single quotes et ajoute un marqueur \x01 au début du token
 2.	Expansion : Détecte le marqueur et skip l'expansion pour ces tokens
 3.	Double quotes : Pas de marqueur, donc expansion normale
- 
-
- 
-
-
-
 <img width="454" height="713" alt="image" src="https://github.com/user-attachments/assets/f65f238b-bb79-4df2-b0a0-0ddab7545cdb" />
