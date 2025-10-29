@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:26:20 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 20:58:00 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/10/29 19:45:43 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ static char	*read_input(void)
 {
 	char	*line;
 
+	
+	//signal(SIGINT, SIG_DFL);
 	line = readline("minishell$ ");
+	//signal(SIGINT, SIG_DFL);
+	
 	if (line && *line != '\0')
 		add_history(line);
 	return (line);
@@ -106,7 +110,11 @@ void	shell_loop(t_mother_shell *shell)
 			printf("exit\n");
 			break ;
 		}
-		if (*line != '\0')
+		if (*line == '\0')
+		{
+			free(line);
+			continue;
+		}
 			process_line(line, shell);
 		free(line);
 	}
