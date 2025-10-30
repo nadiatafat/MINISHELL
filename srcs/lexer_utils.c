@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:54:07 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 20:58:36 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/10/30 08:03:01 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static char	*copy_quoted(char *line, int len)
 	int		i;
 	int		j;
 
-	token = malloc(len + 1);// +1 pour le marqueur éventuel + \0
+	token = malloc(len + 1);
 	if (!token)
 		return (NULL);
 	if (line[0] == '\'')

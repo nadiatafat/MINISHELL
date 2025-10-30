@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:28:09 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 21:14:46 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/10/30 08:16:06 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ typedef struct s_mother_shell
 /*                       	FUNCTIONS                           */
 /****************************************************************/
 
-//extern void	rl_replace_line(const char *, int n);
+extern void	rl_replace_line(const char *str, int n);
+
+extern volatile sig_atomic_t	g_sigint;
 
 #endif
