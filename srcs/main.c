@@ -6,14 +6,14 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/29 21:30:51 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/10/30 08:09:25 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "shell_loop.h"
 
-volatile sig_atomic_t g_sigint_received = 0;
+volatile sig_atomic_t	g_sigint_received = 0;
 
 extern void	rl_replace_line(const char *str, int n);
 
@@ -25,13 +25,10 @@ extern void	rl_replace_line(const char *str, int n);
 static void	sig_handler(int sig)
 {
 	(void)sig;
-	write(1,"\nminishell$ ", 12);
-	/*write(1, "\n", 1);
-	//rl_replace_line("", 0);
-	//if (rl_line_buffer)
-	//	rl_line_buffer[0] = '\0';
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
 	rl_on_new_line();
-	rl_redisplay();*/
+	rl_redisplay();
 }
 
 /*
@@ -93,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_shell(&shell, envp);
-	//rl_catch_signals = 0;
+	rl_catch_signals = 0;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	shell_loop(&shell);
