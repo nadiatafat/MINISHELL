@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:50:31 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 13:36:25 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/01 11:10:19 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "lexer_utils.h"
 
 /*
-** Compte le nb de tokens dans le tab pour l'expansion; le parcourt jusqu'au
+** Compte les tokens dans le tab pour l'expansion; le parcourt jusqu'au
 ** 1er pointeur NULL. Return le nb total de tokens à traiter.
 */
 int	count_tokens_for_expansion(char **tokens)
@@ -29,8 +29,8 @@ int	count_tokens_for_expansion(char **tokens)
 }
 
 /*
-** Expanse les tokens d'un tab en appliquant les substitutions. Alloue un
-** nouveau tab et traite chaque token individuellement.
+** Expanse les tokens d'un tab en appliquant les substitutions.
+** Alloue 1 nouveau tab et traite chaque token individuellement.
 ** Return le tab expansé ou NULL en cas d'erreur.
 */
 char	**expand_tokens(char **tokens, t_expand_ctx *ctx)

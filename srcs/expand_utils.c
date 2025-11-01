@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:42:57 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 13:23:47 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/01 12:49:35 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ char	*handle_special_var_cases(char *str, int start)
 }
 
 /*
-** Extrait le nom d'une var à partir d'une pos donnée.
-** Valide que le nom commence par une lettre ou '_' et contient des char alpha.
+** Extrait le nom d'une var à partir d'une position donnée.
+** Valide que le nom commence par 1 lettre ou '_' et contient des char alpha.
 ** Return le nom de la var ou NULL si format invalide.
 */
 char	*get_var_name(char *str, int start)
