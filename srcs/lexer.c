@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:10:40 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 15:38:56 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/01 15:10:56 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	**fill_tokens(char *line, char **tokens)
 	i = 0;
 	while (*line)
 	{
-		while (*line == ' ')
+		while (*line == ' ' || *line == '\t')
 			line++;
 		if (*line)
 		{

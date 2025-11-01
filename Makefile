@@ -6,7 +6,7 @@
 #    By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/25 13:01:19 by sdossa            #+#    #+#              #
-#    Updated: 2025/10/20 04:37:32 by sdossa           ###   ########.fr        #
+#    Updated: 2025/11/01 15:18:55 by sdossa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ LIBFT 		= ./libft/libft.a
 LIBS 		= -lreadline
 
 CC 			= cc
-CFLAGS 		= -Wall -Wextra -Werror $(INCLUDES)
+CFLAGS 		= -Wall -Wextra -Werror $(INCLUDES) -g
 RM 			= rm -f
 MKDIR 		= mkdir -p
 INCLUDES	= -I includes -I libft

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 07:18:35 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 15:01:06 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/01 11:05:38 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 #include "lexer_escape.h"
 
 /*
-** Gère char échappés à l'intérieur de single quotes.
-** Si on est dans des guillemets dbls et qu'on trouve un '\',
-on ignore le caractère suivant.
-** Return la nouvelle position après traitement de l'échappement.
+** Avance dans la ligne, gere les echappements dans dbl quotes.
+** Si on trouve '\' ou '\\', saute 2 char (le \ et le suivant).
+** Sinon saute 1 char. Return la nouvelle position.
 */
 int	handle_escape_in_quotes(char *line, int len, char quote)
 {
@@ -28,9 +27,9 @@ int	handle_escape_in_quotes(char *line, int len, char quote)
 }
 
 /*
-** Compte les char à l'intérieur des quotes en gérant les échappements.
-** Parcourt depuis l'ouverture jusqu'à la fermeture des quotes.
-** Retourne la longueur totale ou -1 si les quotes ne sont pas fermés.
+** Compte la len totale d'un token quoté (avec quotes).
+** Gere les échappements via handle_escape_in_quotes.
+** Return len totale ou -1 si quote fermante manquante.
 */
 int	count_quote_content(char *line, char quote)
 {

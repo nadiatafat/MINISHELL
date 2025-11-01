@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 13:46:34 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/01 13:09:19 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include "expand_utils.h"
 
 /*
-** Replace une var dans 1 chaîne par sa valeur, divise la chaine en 3: avant,
-** valeur, après. Return la new chaîne OU la chaîne originale si erreur.
+** Remplace une variable dans 1 chaîne par sa valeur.
+** Divise la chaine en 3: avant, valeur, aprè, puis les concatene.
+** Return la new chaîne ou la chaîne originale si erreur.
 */
 char	*replace_variable(char *str, int start, int len, char *value)
 {
@@ -42,8 +43,8 @@ char	*replace_variable(char *str, int start, int len, char *value)
 }
 
 /*
-** Joint 3 chaînes en 1 seule. Utilise ft_strjoin pour concatener s1+s2
-** puis le result avec s3. Return la chaîne finale ou NULL si erreur d'alloc.
+** Joint 3 chaînes en 1: strjoin concatene s1+s2 puis le result avec s3.
+** Return la chaîne finale ou NULL si erreur d'alloc.
 */
 char	*join_three_strings(char *s1, char *s2, char *s3)
 {
@@ -61,9 +62,9 @@ char	*join_three_strings(char *s1, char *s2, char *s3)
 }
 
 /*
-** Récupère la valeur d'une var selon son nom.
-** Traite le cas spé de '$?' (code de retour) et les var d'environnement.
-** Return la valeur de la var ou une chaîne vide si inexistante.
+** Récupère la valeur d'une var selon son nom. Cas speciale '$?':
+** return code de retour (last_exit_code). Autres var: recherche
+** dans l'env. Return la valeur allouee ou NULL si inexistante.
 */
 char	*get_variable_value(char *var_name, t_expand_ctx *ctx)
 {

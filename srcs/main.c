@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/30 08:09:25 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/01 14:52:50 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
+	rl_bind_key('\t', rl_insert);
 	shell_loop(&shell);
 	free_shell(&shell);
 	return (0);
