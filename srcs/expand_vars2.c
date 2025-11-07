@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/01 13:09:19 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/07 15:12:28 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ char	*join_three_strings(char *s1, char *s2, char *s3)
 
 	if (!s1 || !s2 || !s3)
 		return (NULL);
-	temp = ft_strjoin(s1, s2, ft_strlen(s1), ft_strlen(s2));
+	temp = ft_strjoin(s1, s2);
 	if (!temp)
 		return (NULL);
-	result = ft_strjoin(temp, s3, ft_strlen(temp), ft_strlen(s3));
+	result = ft_strjoin(temp, s3);
 	free(temp);
 	return (result);
 }

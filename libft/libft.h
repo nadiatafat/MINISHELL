@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:47:00 by sdossa            #+#    #+#             */
-/*   Updated: 2025/09/06 12:09:07 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/07 15:12:12 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char	*ft_strjoin(char *s1, char *s2, int s1_len, int s2_len);
+char	*ft_strjoin(char *s1, char *s2);
 char	*get_next_line(int fd);
 
 long	ft_atoi(const char *str);

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:13:46 by sdossa            #+#    #+#             */
-/*   Updated: 2025/07/18 14:08:00 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/07 15:11:52 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,25 @@ static char	*ft_fetch_lignes(int fd, char *lines)
 {
 	char	*buf;
 	int		read_bytes;
-	int		size;
 
 	if (!lines)
-		lines = ft_chardup(lines);
-	size = ft_strlen(lines);
-	buf = malloc(BUFFER_SIZE + 1 * sizeof(char));
+		lines = ft_chardup("");
+	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
-	buf[0] = '\0';
 	read_bytes = 1;
-	while (!ft_strchr(buf, '\n') && read_bytes != 0)
+	while (!ft_strchr(lines, '\n') && read_bytes != 0)
 	{
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 		if (read_bytes == -1)
 			return (free(buf), free(lines), NULL);
 		buf[read_bytes] = '\0';
-		if (read_bytes == 0)
-			break ;
-		lines = ft_strjoin(lines, buf, size, read_bytes);
-		size += read_bytes;
+		lines = ft_strjoin(lines, buf);
+		if (!lines)
+			return (free(buf), NULL);
 	}
-	return (free(buf), lines);
+	free(buf);
+	return (lines);
 }
 
 char	*get_next_line(int fd)

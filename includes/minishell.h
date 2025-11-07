@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:28:09 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/30 08:16:06 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/04 19:01:26 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ typedef struct s_node
 
 typedef struct s_mother_shell
 {
-	t_node	*ast;
+	void	*ast;
 	int		last_status;
 	char	**env;
+	char	**paths;
 }	t_mother_shell;
 
 /****************************************************************/
