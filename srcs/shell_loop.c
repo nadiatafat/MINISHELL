@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:26:20 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/30 08:15:35 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/07 21:55:00 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include "shell_loop.h"
 #include "syntax_check.h"
 #include "syntax_validation.h"
+
+extern volatile sig_atomic_t	g_sigint_received;
 
 /*
 ** Lit la saisie utilisateur avec readline.
@@ -56,6 +58,7 @@ t_mother_shell *shell)
 	if (!validate_syntax(tokens))
 	{
 		printf("Syntax error\n");
+		shell->last_status = 2;
 		free_tokens(tokens);
 		return (0);
 	}
@@ -88,6 +91,15 @@ static void	process_line(char *line, t_mother_shell *shell)
 	free_tokens(expanded_tokens);
 }
 
+static void	handle_signal_status(t_mother_shell *shell)
+{
+	if (g_sigint_received == SIGINT)
+	{
+		shell->last_status = 130;
+		g_sigint_received = 0;
+	}
+}
+
 /*
 ** Boucle principale du shell.
 ** Lit en continu les cmd utilisateur jusqu'à EOF ou exit.
@@ -99,7 +111,9 @@ void	shell_loop(t_mother_shell *shell)
 
 	while (1)
 	{
+		handle_signal_status(shell);
 		line = read_input();
+		handle_signal_status(shell);
 		if (!line)
 		{
 			printf("exit\n");

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:50:31 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/01 11:10:19 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/08 20:25:33 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,56 @@ char	*expand_token(char *token, t_expand_ctx *ctx)
 	if (!result)
 		return (NULL);
 	return (process_token_variables(result, ctx));
+}
+
+/*
+** Nettoie les marqueurs d'échappement \x02 d'une chaîne.
+** Parcourt la chaîne et supprime tous les marqueurs trouvés.
+*/
+char	*clean_escape_markers(char *result)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (result[i])
+	{
+		if (result[i] == '\x02')
+			i++;
+		else
+			result[j++] = result[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+/*
+** Traite une variable à position donnée et avance le curseur.
+** Extrait nom, récupère valeur, fait remplacement et calcule nouvelle pos.
+*/
+int	process_single_var(char **result, int i, t_expand_ctx *ctx)
+{
+	char	*var_name;
+	char	*var_value;
+	char	*new_result;
+	int		var_len;
+
+	var_name = get_var_name(*result, i + 1);
+	if (!var_name)
+		return (i + 1);
+	var_value = get_variable_value(var_name, ctx);
+	var_len = ft_strlen(var_name) + 1;
+	new_result = replace_variable(*result, i, var_len, var_value);
+	if (new_result != *result)
+	{
+		free(*result);
+		*result = new_result;
+		i += ft_strlen(var_value);
+	}
+	else
+		i++;
+	free(var_name);
+	free(var_value);
+	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 11:10:40 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/01 15:10:56 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/08 20:01:07 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,24 @@
 #include "lexer_utils.h"
 
 /*
-** Parcourt la ligne et check que ts les quotes sont bien fermés.
-** Retourne 1 si la syntaxe est valide.
+** Gère l'avancement dans une quote ouverte.
+** Traite les échappements en double quotes uniquement.
+*/
+static char	*process_inside_quote(char *line, char quote)
+{
+	while (*line && *line != quote)
+	{
+		if (quote == '"' && *line == '\\' && *(line + 1))
+			line += 2;
+		else
+			line++;
+	}
+	return (line);
+}
+
+/*
+** Vérifie que toutes les quotes sont fermées.
+** Parcourt la ligne et délègue le traitement des quotes.
 */
 int	check_closed_quotes(char *line)
 {
@@ -28,8 +44,7 @@ int	check_closed_quotes(char *line)
 		{
 			quote = *line;
 			line++;
-			while (*line && *line != quote)
-				line++;
+			line = process_inside_quote(line, quote);
 			if (!*line)
 				return (0);
 		}

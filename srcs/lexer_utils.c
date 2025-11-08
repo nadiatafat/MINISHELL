@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:54:07 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/01 13:10:12 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/08 14:03:53 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,37 +51,6 @@ int	token_len(char *line)
 		&& line[len] != '<' && line[len] != '>')
 		len++;
 	return (len);
-}
-
-/*
-** Copie le contenu d'un token entre quotes .
-** Single quotes: marqueur \x01 + pas d'expansion.
-** Return le token sans les quotes de délimitation.
-*/
-static char	*copy_quoted(char *line, int len)
-{
-	char	quote;
-	char	*token;
-	int		j;
-	int		i;
-
-	quote = line[0];
-	token = malloc(len + 1);
-	if (!token)
-		return (NULL);
-	j = (quote == '\'');
-	if (j)
-		token[0] = '\x01';
-	i = 1;
-	while (i < len - 1)
-	{
-		if (quote == '"' && line[i] == '\\'
-			&& (line[i + j] == '"' || line[i + 1] == '\\'))
-			i++;
-		token[j++] = line[i++];
-	}
-	token[j] = '\0';
-	return (token);
 }
 
 /*

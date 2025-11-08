@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:19:45 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 19:41:38 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/08 14:05:46 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,6 @@ t_command	*new_command(char **tokens, int start, int end)
 		return (NULL);
 	}
 	return (cmd);
-}
-
-/*
-** Trouve la pos du prochain pipe dans le tab de tokens.
-** Parcourt les tokens depuis start jusqu'à trouver un "|".
-** Return index du pipe ou -1 si aucun pipe.
-*/
-int	find_next_pipe(char **tokens, int start)
-{
-	int	i;
-
-	i = start;
-	while (tokens[i])
-	{
-		if (ft_strcmp(tokens[i], "|") == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
 }
 
 /*

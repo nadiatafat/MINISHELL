@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/01 14:52:50 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/07 21:57:23 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ extern void	rl_replace_line(const char *str, int n);
 */
 static void	sig_handler(int sig)
 {
-	(void)sig;
+	g_sigint_received = sig;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -46,7 +46,7 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	shell->env = malloc(sizeof(char *) * (i + 1));
+	shell->env = malloc(sizeof(char *) * (i + 5));
 	if (!shell->env)
 		exit(1);
 	j = 0;
@@ -55,7 +55,11 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 		shell->env[j] = ft_strdup(envp[j]);
 		j++;
 	}
-	shell->env[i] = NULL;
+	/* Variables de test pour l'expansion */
+	shell->env[i] = ft_strdup("A=1");
+	shell->env[i + 1] = ft_strdup("B=");
+	shell->env[i + 2] = ft_strdup("C=3");
+	shell->env[i + 3] = NULL;/* CRITIQUE : Terminateur obligatoire */
 }
 
 /*

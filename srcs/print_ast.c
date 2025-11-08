@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 00:20:03 by sdossa            #+#    #+#             */
-/*   Updated: 2025/10/27 19:43:04 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/08 20:27:36 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	print_command_node(t_node *node, int depth)
 		i++;
 	}
 	printf("\n");
+	if (node->command->redir)
+		print_redirections(node->command->redir, depth);
 }
 
 /*
@@ -57,4 +59,25 @@ void	print_pipe_node(t_node *node, int depth)
 	printf("%*sPIPE\n", depth * 2, "");
 	print_ast(node->left, depth + 1);
 	print_ast(node->right, depth + 1);
+}
+
+/*
+** Affiche les redirections d'une commande.
+** Parcourt la liste chaînée et affiche chaque redirection.
+*/
+void	print_redirections(t_redirect *redir, int depth)
+{
+	while (redir)
+	{
+		printf("%*sREDIRECTION: ", depth * 2 + 2, "");
+		if (redir->type == REDIR_IN)
+			printf("< %s\n", redir->filename);
+		else if (redir->type == REDIR_OUT)
+			printf("> %s\n", redir->filename);
+		else if (redir->type == REDIR_APPEND)
+			printf(">> %s\n", redir->filename);
+		else if (redir->type == REDIR_HEREDOC)
+			printf("<< %s\n", redir->filename);
+		redir = redir->next;
+	}
 }

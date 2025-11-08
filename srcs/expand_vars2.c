@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/07 15:12:28 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/07 21:38:44 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,52 +74,24 @@ char	*get_variable_value(char *var_name, t_expand_ctx *ctx)
 }
 
 /*
-** Traite une var spécifique à une position donnée dans la chaîne.
-** Extrait le nom de la var, récupère sa valeur et effectue le remplacement.
-** Return la chaîne modifiée ou la chaîne originale si échec.
-*/
-char	*process_variable(char *str, int pos, t_expand_ctx *ctx)
-{
-	char	*var_name;
-	char	*var_value;
-	char	*result;
-
-	var_name = get_var_name(str, pos + 1);
-	if (!var_name)
-		return (str);
-	var_value = get_variable_value(var_name, ctx);
-	result = replace_variable(str, pos, ft_strlen(var_name) + 1, var_value);
-	free(var_name);
-	free(var_value);
-	return (result);
-}
-
-/*
 ** Traite ttes les var d'un token de manière itérative.
 ** Parcourt la chaîne, remplace chaque '$' trouvé hors single quotes.
 ** Recommence depuis debut après chaque remplacement pr gérer cas complexes.
 */
 char	*process_token_variables(char *result, t_expand_ctx *ctx)
 {
-	char	*new_result;
-	int		i;
+	int	i;
 
 	i = 0;
 	while (result[i])
 	{
 		if (result[i] == '$' && result[i + 1]
-			&& !is_in_single_quotes(result, i))
+			&& !(i > 0 && result[i - 1] == '\x02'))
 		{
-			new_result = process_variable(result, i, ctx);
-			if (new_result != result)
-			{
-				free(result);
-				result = new_result;
-				i = 0;
-				continue ;
-			}
+			i = process_single_var(&result, i, ctx);
 		}
-		i++;
+		else
+			i++;
 	}
-	return (result);
+	return (clean_escape_markers(result));
 }

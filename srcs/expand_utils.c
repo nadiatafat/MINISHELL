@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:42:57 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/01 12:49:35 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/08 20:30:18 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,14 @@ int	has_variable(char *str)
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1])
+		{
+			if (i > 0 && str[i - 1] == '\x02')
+			{
+				i++;
+				continue ;
+			}
 			return (1);
+		}
 		i++;
 	}
 	return (0);
