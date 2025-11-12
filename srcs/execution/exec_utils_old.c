@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   exec_utils_old.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ssinanis <ssinanis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:33:45 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/02/21 14:23:41 by ssinanis         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:17:18 by nadgalle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_free_command(t_command *command)
 	next = NULL;
 	if (command)
 	{
-		if (command->input_file)
+		if (commanAd->input_file)
 			free(command->input_file);
 		if (command->output_file)
 			free(command->output_file);
