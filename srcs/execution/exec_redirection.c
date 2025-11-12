@@ -168,35 +168,51 @@ void	outfile_append_redirection(t_command *command)
 	}
 }
 
-// void	handle_child_redirection(t_command *command)
-// {
-// 	input_file_redirection(command);
-// 	output_file_redirection(command);
-// 	if (command->pipe_fd[0] != -1)
-// 		close(command->pipe_fd[0]);
-// 	if (command->pipe_fd[1] != -1)
-// 		close(command->pipe_fd[1]);
-// }
+/*
+** Redirections dans le processus enfant
+** Gère toutes les redirections (infile, outfile, append, heredoc)
+** puis ferme les descripteurs de pipe inutiles.
+*/
+void	handle_child_redirection(t_command *command)
+{
+	if (!command)
+		return;
+	heredoc_redirection(command);
+	infile_redirection(command);
+	outfile_truncate_redirection(command);
+	outfile_append_redirection(command);
+	if (command->pipe_fd[0] != -1)
+		close(command->pipe_fd[0]);
+	if (command->pipe_fd[1] != -1)
+		close(command->pipe_fd[1]);
+}
 
-// void	handle_parent_redirection(t_command *command)
-// {
-// 	if (command->pipe_fd[1] != -1)
-// 		close(command->pipe_fd[1]);
-// 	if (command->input_fd != -1 && command->input_fd != STDIN_FILENO)
-// 		close(command->input_fd);
-// 	if (command->output_fd != -1 && command->output_fd != STDOUT_FILENO)
-// 		close(command->output_fd);
-// 	if (command->heredoc_fd != -1 && command->heredoc_fd != STDIN_FILENO)
-// 		close(command->heredoc_fd);
-// 	if (command->next)
-// 	{
-// 		if (command->pipe_fd[0] != -1)
-// 		{
-// 			if (dup2(command->pipe_fd[0], STDIN_FILENO) == -1)
-// 				ft_exit_free("pipe", EXIT_FAILURE, command, NULL);
-// 			close(command->pipe_fd[0]);
-// 		}
-// 	}
-// 	else if (command->pipe_fd[0] != -1)
-// 		close(command->pipe_fd[0]);
-// }
+/*
+** Redirections dans le processus parent
+** Ferme les descripteurs inutiles après le fork et prépare le stdin du prochain
+** maillon de la pipeline si nécessaire.
+*/
+void	handle_parent_redirection(t_command *command)
+{
+	if (!command)
+		return;
+	if (command->pipe_fd[1] != -1)
+		close(command->pipe_fd[1]);
+	if (command->input_fd != -1 && command->input_fd != STDIN_FILENO)
+		close(command->input_fd);
+	if (command->output_fd != -1 && command->output_fd != STDOUT_FILENO)
+		close(command->output_fd);
+	if (command->heredoc_fd != -1 && command->heredoc_fd != STDIN_FILENO)
+		close(command->heredoc_fd);
+	if (command->next)
+	{
+		if (command->pipe_fd[0] != -1)
+		{
+			if (dup2(command->pipe_fd[0], STDIN_FILENO) == -1)
+				ft_exit_free("pipe", EXIT_FAILURE, command, NULL);
+			close(command->pipe_fd[0]);
+		}
+	}
+	else if (command->pipe_fd[0] != -1)
+		close(command->pipe_fd[0]);
+}
