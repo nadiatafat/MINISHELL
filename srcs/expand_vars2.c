@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/07 21:38:44 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/11 15:27:55 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*
 ** Remplace une variable dans 1 chaîne par sa valeur.
-** Divise la chaine en 3: avant, valeur, aprè, puis les concatene.
+** Divise la chaine en 3: avant, valeur, après, puis les concatene.
 ** Return la new chaîne ou la chaîne originale si erreur.
 */
 char	*replace_variable(char *str, int start, int len, char *value)
