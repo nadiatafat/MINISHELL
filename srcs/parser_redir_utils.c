@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 03:59:34 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/11 19:57:42 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/12 15:10:27 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,80 +71,47 @@ int	fill_argv(char **tokens, int start, int end, char **argv)
 	return (0);
 }
 
-
-static int process_single_redirection(char **tokens, int *i, int end, t_redirect **redir)
+static int	process_single_redirection(char **tokens, int *i, int end,
+	t_redirect **redir)
 {
-    int             redir_type;
-    t_redirect      *new_redir;
+	t_redirect	*new_redir;
+	int			redir_type;
 
-    redir_type = is_redirection(tokens[*i]);
-    if (!redir_type)
-    {
-        (*i)++;
-        return (0);
-    }
-    if (*i + 1 >= end || !tokens[*i + 1])
-        return (-1);
-    new_redir = new_redirection(redir_type, tokens[*i + 1]);
-    if (!new_redir)
-    {
-        free_redirections(*redir);
-        *redir = NULL;
-        return (-1);
-    }
-    add_redirect(redir, new_redir);
-    *i += 2;
-    return (0);
+	redir_type = is_redirection(tokens[*i]);
+	if (!redir_type)
+	{
+		(*i)++;
+		return (0);
+	}
+	if (*i + 1 >= end || !tokens[*i + 1])
+		return (-1);
+	new_redir = new_redirection(redir_type, tokens[*i + 1]);
+	if (!new_redir)
+	{
+		free_redirections(*redir);
+		*redir = NULL;
+		return (-1);
+	}
+	add_redirect(redir, new_redir);
+	*i += 2;
+	return (0);
 }
-
-
-
 
 /*
 ** Parcourt les tokens et construit la liste chaînée des redir.
 ** Chaque opérateur est associé à son fichier cible (ex: ">" out.txt).
 ** Return -1 si syntaxe invalide ou si une alloc échoue.
 */
-int extract_redir(char **tokens, int start, int end, t_redirect **redir)
+int	extract_redir(char **tokens, int start, int end, t_redirect **redir)
 {
-    int i;
-
-    i = start;
-    *redir = NULL;
-    while (i < end)
-    {
-        if (process_single_redirection(tokens, &i, end, redir) == -1)
-            return (-1);
-    }
-    return (0);
-}
-
-
-
-/*int	extract_redir(char **tokens, int start, int end, t_redirect **redir)
-{
-	int				i;
-	int				redir_type;
-	t_redirect		*new_redir;
+	int	i;
 
 	i = start;
 	*redir = NULL;
 	while (i < end)
 	{
-		redir_type = is_redirection(tokens[i]);
-		if (redir_type)
-		{
-			if (i + 1 >= end || !tokens[i + 1])
-				return (-1);
-			new_redir = new_redirection(redir_type, tokens[i + 1]);
-			if (!new_redir)
-				return (-1);
-			add_redirect(redir, new_redir);
-			i += 2;
-		}
-		else
-			i++;
+		if (process_single_redirection(tokens, &i, end, redir) == -1)
+			return (-1);
 	}
 	return (0);
 }
-*/
