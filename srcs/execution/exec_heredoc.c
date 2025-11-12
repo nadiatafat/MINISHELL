@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:31:26 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/07 13:23:53 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 20:04:21 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 
-/* 
+/*
 ** Affiche un prompt "pipe heredoc>" et lit l'entrée utilisateur ligne par ligne
 ** jusqu'à atteindre le 'limiter' (par exemple : EOF, STOP, etc.)
 ** Chaque ligne est écrite dans le fichier temporaire correspondant.
@@ -41,7 +41,7 @@ static void	read_heredoc_content(char *limiter_n, int tmpfile_fd)
 	}
 }
 
-/* 
+/*
 ** Ouvre un fichier selon le mode demandé.
 ** open_flag == 0 → écriture (O_TRUNC)
 ** open_flag == 1 → lecture
@@ -55,11 +55,11 @@ static int	ft_open_file(char *path, int open_flag, t_command *command)
 	else
 		fd = open(path, O_RDONLY);
 	if (fd == -1)
-		ft_exit_free(path, EXIT_FAILURE, command, NULL);
+		ft_exit_free(path, EXIT_FAILURE, command);
 	return (fd);
 }
 
-/* 
+/*
 ** Génère un nom de fichier temporaire unique : /tmp/heredoc_X
 ** X = index du heredoc courant
 */
@@ -81,7 +81,7 @@ static char	*ft_get_heredoc_filename(int index)
 	return (path);
 }
 
-/* 
+/*
 ** Crée et écrit un fichier temporaire pour un heredoc donné.
 ** Si c'est le dernier heredoc, ouvre aussi le fichier en lecture
 ** pour le rediriger plus tard sur STDIN.
@@ -94,7 +94,7 @@ static int	create_tmp_file(t_command *command, t_redirect *cur, char *tmp_path, 
 	write_fd = ft_open_file(tmp_path, 0, command);
 	limiter_n = ft_strjoin(cur->filename, "\n");
 	if (!limiter_n)
-		ft_exit_free("malloc heredoc limiter", EXIT_FAILURE, command, NULL);
+		ft_exit_free("malloc heredoc limiter", EXIT_FAILURE, command);
 	read_heredoc_content(limiter_n, write_fd);
 	free(limiter_n);
 	close(write_fd);
@@ -131,7 +131,7 @@ int	get_heredoc(t_command *command)
 		{
 			tmp_path = ft_get_heredoc_filename(i++);
 			if (!tmp_path)
-				ft_exit_free("heredoc filename", EXIT_FAILURE, command, NULL);
+				ft_exit_free("heredoc filename", EXIT_FAILURE, command);
 			tmpfile_fd = create_tmp_file(command, cur, tmp_path, tmpfile_fd);
 			unlink(tmp_path);
 			free(tmp_path);

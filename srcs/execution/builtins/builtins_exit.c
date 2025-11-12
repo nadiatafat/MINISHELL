@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_exit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:38:22 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/02/24 18:41:43 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 18:56:55 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	ft_exit(char **tokens, int *exit_status)
 {
 	if (tokens[1])
 	{
-		if (ft_is_number(tokens[1]))
+		if (ft_isnumber(tokens[1]))
 			*exit_status = ft_atoi(tokens[1]);
 		else
 		{

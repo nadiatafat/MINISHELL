@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:41:06 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/02/24 16:21:00 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 19:07:43 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_isbuiltin(char *str)
 {
@@ -32,21 +32,21 @@ int	ft_isbuiltin(char *str)
 }
 
 void	ft_exebuiltin(char **tokens, char ***envp, int *exit_status, int fd)
-{	
+{
 	*exit_status = 0;
-	if (ft_strncmp(tokens[0], "echo", ft_strlen("echo")) == 0)
+	if (ft_strcmp(tokens[0], "echo") == 0)
 		ft_echo(tokens, fd);
-	else if (ft_strncmp(tokens[0], "pwd", ft_strlen("pwd")) == 0)
+	else if (ft_strcmp(tokens[0], "pwd") == 0)
 		ft_pwd(fd, tokens, exit_status);
-	else if (ft_strncmp(tokens[0], "env", ft_strlen("env")) == 0)
+	else if (ft_strcmp(tokens[0], "env") == 0)
 		ft_env(*envp, fd);
-	else if (ft_strncmp(tokens[0], "cd", ft_strlen("cd")) == 0)
+	else if (ft_strcmp(tokens[0], "cd") == 0)
 		ft_cd_invalid_opt(tokens, exit_status, *envp);
-	else if (ft_strncmp(tokens[0], "export", ft_strlen("export")) == 0)
+	else if (ft_strcmp(tokens[0], "export") == 0)
 		*envp = ft_export(*envp, tokens, exit_status, fd);
-	else if (ft_strncmp(tokens[0], "unset", ft_strlen("unset")) == 0)
+	else if (ft_strcmp(tokens[0], "unset") == 0)
 		*envp = ft_unset(*envp, tokens, exit_status);
-	else if (ft_strncmp(tokens[0], "exit", ft_strlen("exit")) == 0)
+	else if (ft_strcmp(tokens[0], "exit") == 0)
 		ft_exit(tokens, exit_status);
 }
 
@@ -81,7 +81,7 @@ int	ft_check_path_builtin(char *path, int *exit_code)
 	return (1);
 }
 
-int	ft_check_redirection(t_command *command, int *exit_code)
+/*int	ft_check_redirection(t_command *command, int *exit_code)
 {
 	int	flag;
 
@@ -91,4 +91,4 @@ int	ft_check_redirection(t_command *command, int *exit_code)
 	if (command->output_fd == -1)
 		flag = ft_check_path_builtin(command->output_file, exit_code);
 	return (flag);
-}
+}*/

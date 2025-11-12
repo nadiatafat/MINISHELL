@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_echo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:14:42 by ssinanis          #+#    #+#             */
-/*   Updated: 2025/02/24 18:37:18 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:20:45 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	ft_parse_flags(char **tokens, size_t *i, int *print_newline)
 {

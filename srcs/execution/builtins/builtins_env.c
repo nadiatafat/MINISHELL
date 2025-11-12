@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_env.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:55:19 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/02/24 18:41:36 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:21:06 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 char	*ft_strdup2(char *src, int n)
 {

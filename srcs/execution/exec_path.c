@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:26:27 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/07 14:54:51 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 21:18:18 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 /*
 ** Vérifie que le chemin donné correspond à un exécutable valide :
@@ -48,23 +48,28 @@ void	ft_check_path(char *path, t_command *command)
 ** en un tableau de chemins, séparés par ':'.
 ** Exemple : "PATH=/bin:/usr/bin" → ["bin", "usr/bin", NULL]
 */
-char	**get_path_tab(char **env)
+char    **get_path_tab(char **env)
 {
-	char	**paths;
-	int		i;
+	char    **paths;
+	int     i;
+	int j;
 
 	i = 0;
-	paths = NULL;
-	while (env[i] && ft_strnstr(env[i], "PATH=", 5) == 0)
-			i++;
-	if (env[i])
+	while (env[i])
 	{
-		paths = ft_split(env[i] + 5, ':');
-		return (paths);
+		if (env[i][0] == 'P' && env[i][1] == 'A' && env[i][2] == 'T'
+			&& env[i][3] == 'H' && env[i][4] == '=')
+		{
+			paths = ft_split(env[i] + 5, ':');
+			j = 0;
+			while (paths && paths[j])
+				j++;
+			return (paths);
+		}
+		i++;
 	}
 	return (NULL);
 }
-
 /*
 ** Construit un chemin complet à partir d’un dossier et d’une commande :
 ** Exemple : path="/bin", cmd="ls" → "/bin/ls"
@@ -90,27 +95,25 @@ char	*get_path(char *cmd, char **env)
 {
 	char	**paths;
 	char	*path;
-	int		i;
+	int	i;
 
 	if (ft_strchr(cmd, '/'))
-		return (cmd);
-	else
+		return (ft_strdup(cmd));
+	paths = get_path_tab(env);
+	if (!paths)
+		return (NULL);
+	i = 0;
+	while (paths[i])
 	{
-		paths = get_path_tab(env);
-		if (!paths)
-			return (NULL);
-		i = 0;
-		while (paths[i])
+		path = ft_join_path(cmd, paths[i]);
+		if (access(path, F_OK | X_OK) == 0)
 		{
-			path = ft_join_path(cmd, paths[i++]);
-			if (access(path, F_OK) == 0)
-			{
-				ft_free_tab(paths);
-				return (path);
-			}
-			free(path);
+			ft_free_tab(paths);
+			return (path);
 		}
-		ft_free_tab(paths);
+		free(path);
+		i++;
 	}
+	ft_free_tab(paths);
 	return (NULL);
 }

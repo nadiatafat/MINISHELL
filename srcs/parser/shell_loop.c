@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:26:20 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/12 15:04:56 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/12 20:21:20 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	process_line(char *line, t_mother_shell *shell)
 	shell->ast = parse_tokens(expanded_tokens);
 	if (shell->ast)
 	{
-		print_ast(shell->ast, 0);
+		execute_ast(shell->ast, shell);
 		free_node(shell->ast);
 		shell->ast = NULL;
 	}

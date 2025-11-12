@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_pwd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 13:52:30 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/02/24 18:40:46 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:21:36 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	ft_pwd(int output_fd, char **tokens, int *exit_code)
 {

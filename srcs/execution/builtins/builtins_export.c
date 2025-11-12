@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:22:17 by ssinanis          #+#    #+#             */
-/*   Updated: 2025/02/24 18:42:00 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:21:30 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	ft_extract_key_value(char *token, char **key, char **value)
 {

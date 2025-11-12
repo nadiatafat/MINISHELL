@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nadgalle <nadgalle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:39:08 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/02/24 18:39:12 by nadgalle         ###   ########.fr       */
+/*   Updated: 2025/11/12 17:21:19 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	ft_print_export(char **env, int output_fd)
 {
