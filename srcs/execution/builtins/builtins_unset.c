@@ -6,11 +6,19 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:12:50 by ssinanis          #+#    #+#             */
-/*   Updated: 2025/11/12 17:21:43 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 15:30:23 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	ft_remove_env_entry(char **envp, size_t b)
+{
+	free(envp[b]);
+	while (envp[++b])
+		envp[b - 1] = envp[b];
+	envp[b - 1] = NULL;
+}
 
 char	**ft_unset(char **envp, char **tokens, int *exit_status)
 {
@@ -28,10 +36,7 @@ char	**ft_unset(char **envp, char **tokens, int *exit_status)
 			if (ft_strncmp(envp[b], tokens[i], ft_strlen(tokens[i])) == 0
 				&& envp[b][ft_strlen(tokens[i])] == '=')
 			{
-				free(envp[b]);
-				while (envp[++b])
-					envp[b - 1] = envp[b];
-				envp[b - 1] = NULL;
+				ft_remove_env_entry(envp, b);
 				break ;
 			}
 			b++;
@@ -58,6 +63,12 @@ int	ft_check_option(int *exit_status, char **tokens)
 	return (1);
 }
 
+static void	ft_dup_error_exit(char *msg)
+{
+	perror(msg);
+	exit(1);
+}
+
 char	**ft_duplicate_env(char **envp)
 {
 	char	**new_env;
@@ -69,19 +80,14 @@ char	**ft_duplicate_env(char **envp)
 		size++;
 	new_env = malloc((size + 1) * sizeof(char *));
 	if (!new_env)
-	{
-		perror("minishell: malloc");
-		exit(1);
-	}
-	i = -1;
-	while (envp[++i])
+		ft_dup_error_exit("minishell: malloc");
+	i = 0;
+	while (envp[i])
 	{
 		new_env[i] = ft_strdup(envp[i]);
 		if (!new_env[i])
-		{
-			perror("minishell: ft_strdup");
-			exit(1);
-		}
+			ft_dup_error_exit("minishell: ft_strdup");
+		i++;
 	}
 	new_env[size] = NULL;
 	return (new_env);

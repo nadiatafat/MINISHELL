@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 07:18:35 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/08 20:26:15 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 20:23:03 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,64 +50,24 @@ int	count_quote_content(char *line, char quote)
 }
 
 /*
-** Traite les échappements et copie le contenu entre quotes.
-** Gère les marqueurs \x01 et \x02 selon le type de quote et échappements.
+** CORRECTION DU BUG: Ajoute le marqueur \x02 avant chaque caractère
+** dans les single quotes pour empêcher l'expansion des variables.
+** Les double quotes permettent l'expansion, donc pas de marqueur.
 */
-static void	process_quoted_content(char *line, int len, char *token, char quote)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	if (quote == '\'')
-		token[j++] = '\x01';
-	i = 1;
-	while (i < len - 1)
-	{
-		if (quote == '"' && line[i] == '\\')
-			i = handle_escape_in_double_quotes(line, i, token, &j);
-		else
-			token[j++] = line[i++];
-	}
-	token[j] = '\0';
-}
-
-/*
-** Traite les échappements et copie le contenu entre quotes.
-** Gère les marqueurs \x01 et \x02 selon le type de quote et échappements.
-*/
-int	handle_escape_in_double_quotes(char *line, int i, char *token, int *j)
-{
-	if (line[i + 1] == '"' || line[i + 1] == '\\')
-	{
-		i++;
-		token[(*j)++] = line[i++];
-	}
-	else if (line[i + 1] == '$')
-	{
-		i++;
-		token[(*j)++] = '\x02';
-		token[(*j)++] = line[i++];
-	}
-	else
-		token[(*j)++] = line[i++];
-	return (i);
-}
-
-/*
-** Copie le contenu d'un token entre quotes.
-** Single quotes: marqueur \x01 + pas d'expansion.
-** Return le token sans les quotes de délimitation.
-*/
-char	*copy_quoted(char *line, int len)
+void	process_quotes_in_token(char *line, char *token, int *i, int *j)
 {
 	char	quote;
-	char	*token;
 
-	quote = line[0];
-	token = malloc(len);
-	if (!token)
-		return (NULL);
-	process_quoted_content(line, len, token, quote);
-	return (token);
+	quote = line[(*i)++];
+	while (line[*i] && line[*i] != quote)
+	{
+		if (quote == '"' && line[*i] == '\\'
+			&& (line[*i + 1] == '"' || line[*i + 1] == '\\'))
+			(*i)++;
+		if (quote == '\'')
+			token[(*j)++] = '\x02';
+		token[(*j)++] = line[(*i)++];
+	}
+	if (line[*i] == quote)
+		(*i)++;
 }

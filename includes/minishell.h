@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:28:09 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/12 20:19:07 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 17:46:52 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,31 +121,39 @@ char **ft_add_to_array(char **arr, char *str);
 void *ft_realloc(void *ptr, size_t old_size, size_t new_size, int free_flag);
 void ft_free_tab(char **tab);
 
+int	ft_create_env_entry(char ***envp, size_t size, char *key, char *value);
+int	ft_process_export_token(char ***envp, char *token, int *exit_status);
 
 /****************************************************************/
 /*              FONCTIONS UTILITAIRES                           */
 /****************************************************************/
 
-/* Gestion HEREDOC */
+/* EXEC HEREDOC AND READ */
+void	read_heredoc_content(char *limiter_n, int tmpfile_fd);
 int	get_heredoc(t_command *command);
+char	*ft_get_heredoc_filename(int index);
+void	prepare_heredocs(t_node *node);
 
-/* Gestion PATH */
+void read_heredoc_content(char *limiter_n, int tmpfile_fd);
+
+/* EXEX PATH */
 void	ft_check_path(char *path, t_command *command);
 char	**get_path_tab(char **env);
 char	*ft_join_path(char *cmd, char *path);
 char	*get_path(char *cmd, char **env);
 
-/* Gestion REDIRECTIONS */
+/* EXEC REDIR HANDLE AND VALIDATE AND INOUT */
+int	handle_redirections(t_redirect *redir);
+void	close_validation_fds(int *fds, int count);
+
 void	infile_redirection(t_command *command);
-void	heredoc_redirection(t_command *command);
 void	outfile_truncate_redirection(t_command *command);
 void	outfile_append_redirection(t_command *command);
-int	handle_redirections(t_redirect *redir);
-void	free_tokens(char **tokens);
-//void	handle_child_redirection(t_command *command);
-//void	handle_parent_redirection(t_command *command);
 
-/* Gestion UTILS */
+//int	validate_and_store(t_redirect *redir, int *fds, int *count);
+int	validate_all_redirections(t_redirect *redir, int **fds_out, int *count_out);
+
+/* EXEC UTILS */
 void	ft_exit_error(char *path, char *error, int code, t_command *cmd);
 void	ft_free_command(t_command *command);
 //void	ft_free_command(t_command *command);
@@ -153,6 +161,13 @@ void	ft_exit_free(char *msg, int status, t_command *cmd);
 void	close_inherited_fds(void);
 void	setup_signal_handling(void);
 
+/* EXEC COMMANDE AND PIPE */
+int	execute_simple_command(t_node *node, t_mother_shell *shell);
+int	execute_pipe(t_node *node, t_mother_shell *shell);
 int	execute_ast(t_node *node, t_mother_shell *shell);
+
+
+void read_heredocs_before_exec(t_node *node);
+int	check_redirections_validity(t_redirect *redir);
 
 #endif

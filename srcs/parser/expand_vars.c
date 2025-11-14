@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:50:31 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/08 20:25:33 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 19:56:09 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,34 @@ int	count_tokens_for_expansion(char **tokens)
 	return (token_count);
 }
 
+static int	process_expanded_token(char **exp, int j, char *temp, int has_q)
+{
+	char	**split_result;
+	int		k;
+
+	if (!has_q && temp[0] && ft_strchr(temp, ' '))
+	{
+		split_result = ft_split(temp, ' ');
+		if (split_result)
+		{
+			k = 0;
+			while (split_result[k])
+			{
+				if (split_result[k][0])
+					exp[j++] = ft_strdup(split_result[k]);
+				k++;
+			}
+			free_tokens(split_result);
+		}
+		free(temp);
+	}
+	else if (temp[0])
+		exp[j++] = temp;
+	else
+		free(temp);
+	return (j);
+}
+
 /*
 ** Expanse les tokens d'un tab en appliquant les substitutions.
 ** Alloue 1 nouveau tab et traite chaque token individuellement.
@@ -36,26 +64,28 @@ int	count_tokens_for_expansion(char **tokens)
 char	**expand_tokens(char **tokens, t_expand_ctx *ctx)
 {
 	char	**expanded;
+	char	*temp;
 	int		i;
-	int		token_count;
+	int		j;
+	int		has_q;
 
 	if (!tokens || !ctx)
 		return (NULL);
-	token_count = count_tokens_for_expansion(tokens);
-	expanded = ft_calloc(sizeof(char *), token_count + 1);
+	expanded = ft_calloc(sizeof(char *),
+			(count_tokens_for_expansion(tokens) * 10) + 1);
 	if (!expanded)
 		return (NULL);
-	i = 0;
-	while (tokens[i])
+	i = -1;
+	j = 0;
+	while (tokens[++i])
 	{
-		expanded[i] = expand_token(tokens[i], ctx);
-		if (!expanded[i])
-		{
-			free_tokens(expanded);
-			return (NULL);
-		}
-		i++;
+		has_q = (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '"'));
+		temp = expand_token(tokens[i], ctx);
+		if (!temp)
+			return (free_tokens(expanded), NULL);
+		j = process_expanded_token(expanded, j, temp, has_q);
 	}
+	expanded[j] = NULL;
 	return (expanded);
 }
 
@@ -70,8 +100,8 @@ char	*expand_token(char *token, t_expand_ctx *ctx)
 
 	if (token && token[0] == '\x01')
 		return (ft_strdup(token + 1));
-	if (!token || !has_variable(token))
-		return (ft_strdup(token));
+	if (!token)
+		return (NULL);
 	result = ft_strdup(token);
 	if (!result)
 		return (NULL);
@@ -103,7 +133,7 @@ char	*clean_escape_markers(char *result)
 /*
 ** Traite une variable à position donnée et avance le curseur.
 ** Extrait nom, récupère valeur, fait remplacement et calcule nouvelle pos.
-*/
+*
 int	process_single_var(char **result, int i, t_expand_ctx *ctx)
 {
 	char	*var_name;
@@ -128,4 +158,4 @@ int	process_single_var(char **result, int i, t_expand_ctx *ctx)
 	free(var_name);
 	free(var_value);
 	return (i);
-}
+}*/

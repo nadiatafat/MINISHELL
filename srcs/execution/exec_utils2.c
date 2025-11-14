@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils2.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/14 14:50:40 by sdossa            #+#    #+#             */
+/*   Updated: 2025/11/14 14:52:36 by sdossa           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 
@@ -77,6 +89,18 @@ void ft_free_tab(char **tab)
     free(tab);
 }
 
+/*
+** Ignore SIGPIPE pour éviter l’arrêt du shell lors d’un pipe brisé.
+*/
+void	setup_signal_handling(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGPIPE, &sa, NULL);
+}
 
 
 

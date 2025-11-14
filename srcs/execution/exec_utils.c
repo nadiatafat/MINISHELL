@@ -6,11 +6,12 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:33:45 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/12 20:00:49 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 17:43:52 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "lexer_utils.h"
 
 /*
 ** Affiche un message d’erreur formaté et quitte proprement le programme.
@@ -67,7 +68,7 @@ void	ft_free_command(t_command *command)
 	if (!command)
 		return;
 	if (command->argv)
-		free_tokens(command->argv);  // ou ft_free_tab si tu l'as
+		free_tokens(command->argv);
 	free_command_redirections(command);
 	free(command);
 }
@@ -83,17 +84,4 @@ void	close_inherited_fds(void)
 	fd = 3;
 	while (fd < 1024)
 		close(fd++);
-}
-
-/*
-** Ignore SIGPIPE pour éviter l’arrêt du shell lors d’un pipe brisé.
-*/
-void	setup_signal_handling(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = SIG_IGN;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGPIPE, &sa, NULL);
 }

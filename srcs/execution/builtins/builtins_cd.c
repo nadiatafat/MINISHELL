@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:54:53 by ssinanis          #+#    #+#             */
-/*   Updated: 2025/11/12 17:20:40 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/13 14:08:41 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	tab_size(char **tab)
 		i++;
 	return (i);
 }
+
 
 void	ft_cd(char **tokens, int *exit_status, char **env)
 {

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 17:26:20 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/12 20:21:20 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 20:09:45 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ static void	process_line(char *line, t_mother_shell *shell)
 	shell->ast = parse_tokens(expanded_tokens);
 	if (shell->ast)
 	{
+		read_heredocs_before_exec(shell->ast);
 		execute_ast(shell->ast, shell);
 		free_node(shell->ast);
 		shell->ast = NULL;

@@ -6,40 +6,11 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:31:26 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/12 20:04:21 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 16:17:47 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-/*
-** Affiche un prompt "pipe heredoc>" et lit l'entrée utilisateur ligne par ligne
-** jusqu'à atteindre le 'limiter' (par exemple : EOF, STOP, etc.)
-** Chaque ligne est écrite dans le fichier temporaire correspondant.
-*/
-static void	read_heredoc_content(char *limiter_n, int tmpfile_fd)
-{
-	char	*line;
-
-	while (1)
-	{
-		ft_putstr_fd("pipe heredoc> ", 1);
-		line = get_next_line(0);
-		if (!line)
-		{
-			ft_putstr_fd("\n", 1);
-			break ;
-		}
-		if (ft_strncmp(line, limiter_n, ft_strlen(limiter_n)) == 0)
-		{
-			free(line);
-			break ;
-		}
-		ft_putstr_fd(line, tmpfile_fd);
-		free(line);
-	}
-}
 
 /*
 ** Ouvre un fichier selon le mode demandé.
@@ -63,7 +34,7 @@ static int	ft_open_file(char *path, int open_flag, t_command *command)
 ** Génère un nom de fichier temporaire unique : /tmp/heredoc_X
 ** X = index du heredoc courant
 */
-static char	*ft_get_heredoc_filename(int index)
+char	*ft_get_heredoc_filename(int index)
 {
 	char	*nb;
 	char	*path;
@@ -107,7 +78,6 @@ static int	create_tmp_file(t_command *command, t_redirect *cur, char *tmp_path, 
 	return (tmpfile_fd);
 }
 
-
 /*
 ** Gère tous les heredocs d'une commande :
 ** - crée un fichier temporaire pour chacun (/tmp/heredoc_X)
@@ -133,10 +103,35 @@ int	get_heredoc(t_command *command)
 			if (!tmp_path)
 				ft_exit_free("heredoc filename", EXIT_FAILURE, command);
 			tmpfile_fd = create_tmp_file(command, cur, tmp_path, tmpfile_fd);
-			unlink(tmp_path);
 			free(tmp_path);
 		}
 		cur = cur->next;
 	}
 	return (tmpfile_fd);
+}
+
+void	prepare_heredocs(t_node *node)
+{
+	t_redirect	*r;
+
+	if (!node)
+		return;
+	if (node->type == NODE_COMMAND && node->command)
+	{
+		r = node->command->redir;
+		while (r)
+		{
+			if (r->type == REDIR_HEREDOC)
+			{
+				// Stocker le FD dans la command
+				// (tu dois ajouter un champ heredoc_fd dans t_command)
+			}
+			r = r->next;
+		}
+	}
+	else if (node->type == NODE_PIPE)
+	{
+		prepare_heredocs(node->left);
+		prepare_heredocs(node->right);
+	}
 }

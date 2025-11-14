@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:26:27 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/12 21:18:18 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 16:12:25 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	ft_check_path(char *path, t_command *command)
 ** en un tableau de chemins, séparés par ':'.
 ** Exemple : "PATH=/bin:/usr/bin" → ["bin", "usr/bin", NULL]
 */
-char    **get_path_tab(char **env)
+char	**get_path_tab(char **env)
 {
-	char    **paths;
-	int     i;
-	int j;
+	char	**paths;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (env[i])
@@ -70,6 +70,7 @@ char    **get_path_tab(char **env)
 	}
 	return (NULL);
 }
+
 /*
 ** Construit un chemin complet à partir d’un dossier et d’une commande :
 ** Exemple : path="/bin", cmd="ls" → "/bin/ls"

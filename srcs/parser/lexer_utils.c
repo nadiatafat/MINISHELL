@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:54:07 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/08 14:03:53 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 18:23:58 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** Détecte et gère les opérateurs doubles (>>, <<), simples (|, <, >)
 ** et quotes lors du parsing. Return la longueur de l'élément détecté.
 */
-static int	handle_quotes_and_ops(char *line)
+int	handle_quotes_and_ops(char *line)
 {
 	if (*line == '>' && *(line + 1) == '>')
 		return (2);
@@ -31,6 +31,18 @@ static int	handle_quotes_and_ops(char *line)
 	return (0);
 }
 
+static int	get_operator_len(char *line)
+{
+	if (*line == '|' || *line == '<' || *line == '>')
+	{
+		if ((*line == '>' && *(line + 1) == '>')
+			|| (*line == '<' && *(line + 1) == '<'))
+			return (2);
+		return (1);
+	}
+	return (0);
+}
+
 /*
 ** Calcule length d'un token dans ligne de commande.
 ** Traite d'abord les cas spéciaux (opérateurs, quotes).
@@ -39,17 +51,28 @@ static int	handle_quotes_and_ops(char *line)
 int	token_len(char *line)
 {
 	int	len;
-	int	s;
+	int	quote_len;
+	int	op_len;
 
 	if (!line || !*line)
 		return (0);
-	s = handle_quotes_and_ops(line);
-	if (s)
-		return (s);
+	op_len = get_operator_len(line);
+	if (op_len > 0)
+		return (op_len);
 	len = 0;
 	while (line[len] && line[len] != ' ' && line[len] != '|'
 		&& line[len] != '<' && line[len] != '>')
-		len++;
+	{
+		if (line[len] == '\'' || line[len] == '"')
+		{
+			quote_len = count_quote_content(&line[len], line[len]);
+			if (quote_len == -1)
+				return (-1);
+			len += quote_len;
+		}
+		else
+			len++;
+	}
 	return (len);
 }
 
@@ -61,19 +84,21 @@ char	*copy_token(char *line, int len)
 {
 	char	*token;
 	int		i;
+	int		j;
 
-	if ((line[0] == '"' || line[0] == '\'') && len >= 2)
-		return (copy_quoted(line, len));
-	token = malloc(len + 1);
+	token = malloc((len * 2) + 1);
 	if (!token)
 		return (NULL);
 	i = 0;
+	j = 0;
 	while (i < len)
 	{
-		token[i] = line[i];
-		i++;
+		if (line[i] == '\'' || line[i] == '"')
+			process_quotes_in_token(line, token, &i, &j);
+		else
+			token[j++] = line[i++];
 	}
-	token[len] = '\0';
+	token[j] = '\0';
 	return (token);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/07 21:57:23 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 15:01:08 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	sig_handler(int sig)
 ** Copie les var d'env et initialise les champs de base.
 ** Alloue la mémoire nécessaire pour l'env du shell.
 */
+
 static void	init_shell(t_mother_shell *shell, char **envp)
 {
 	int	i;
@@ -46,19 +47,25 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 	i = 0;
 	while (envp[i])
 		i++;
-	shell->env = malloc(sizeof(char *) * (i + 5));
+	shell->env = malloc(sizeof(char *) * (i + 10));
 	if (!shell->env)
 		exit(1);
 	j = 0;
 	while (j < i)
 	{
 		shell->env[j] = ft_strdup(envp[j]);
+		// AJOUT: Vérification de la copie complète
+		if (!shell->env[j] || ft_strlen(shell->env[j]) != ft_strlen(envp[j]))
+		{
+			fprintf(stderr, "Error: env var truncated: %s\n", envp[j]);
+			exit(1);
+		}
 		j++;
 	}
-	/* Variables de test pour l'expansion */
+	/* Variables de test pour l'expansion
 	shell->env[i] = ft_strdup("A=1");
 	shell->env[i + 1] = ft_strdup("B=");
-	shell->env[i + 2] = ft_strdup("C=3");
+	shell->env[i + 2] = ft_strdup("C=3");*/
 	shell->env[i + 3] = NULL;/* CRITIQUE : Terminateur obligatoire */
 }
 

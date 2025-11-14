@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:22:17 by ssinanis          #+#    #+#             */
-/*   Updated: 2025/11/12 17:21:30 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/13 14:20:12 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	ft_replace_env_var(char **envp, char *key, char *value)
 	return (0);
 }
 
+
 int	ft_add_new_env_var(char ***envp, char *key, char *value)
 {
 	size_t	size;
@@ -70,20 +71,13 @@ int	ft_add_new_env_var(char ***envp, char *key, char *value)
 		return (0);
 	free(*envp);
 	*envp = new_env;
-	(*envp)[size] = malloc(ft_strlen(key) + ft_strlen(value) + 2);
-	if (!(*envp)[size])
-	{
-		(*envp)[size] = NULL;
+	if (!ft_create_env_entry(envp, size, key, value))
 		return (0);
-	}
-	ft_strlcpy((*envp)[size], key, ft_strlen(key) + 1);
-	ft_strlcat((*envp)[size], "=", ft_strlen(key) + 2);
-	ft_strlcat((*envp)[size], value, ft_strlen(key) + ft_strlen(value) + 2);
-	(*envp)[size + 1] = NULL;
-	free (key);
-	free (value);
+	free(key);
+	free(value);
 	return (1);
 }
+
 
 int	ft_check_identifier(char **tokens, int *exit_status)
 {
@@ -112,8 +106,6 @@ int	ft_check_identifier(char **tokens, int *exit_status)
 char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
 {
 	size_t	i;
-	char	*key;
-	char	*value;
 
 	i = 1;
 	if (!tokens[1])
@@ -122,18 +114,9 @@ char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
 		return (envp);
 	while (tokens[i])
 	{
-		if (ft_extract_key_value(tokens[i++], &key, &value))
-		{
-			if (!ft_replace_env_var(envp, key, value))
-			{
-				if (!ft_add_new_env_var(&envp, key, value))
-				{
-					ft_puterror("export", NULL, "memory allocation error");
-					*exit_status = 1;
-					return (envp);
-				}
-			}
-		}
+		if (!ft_process_export_token(&envp, tokens[i], exit_status))
+			return (envp);
+		i++;
 	}
 	return (envp);
 }

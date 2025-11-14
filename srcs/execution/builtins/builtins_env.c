@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:55:19 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/12 17:21:06 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 15:25:48 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,29 @@ void	ft_env(char **envp, int output_fd)
 	}
 }
 
+static char	*ft_get_pwd_env(void)
+{
+	char	*pwd;
+	char	*path;
+	char	cwd[PATH_MAX];
+
+	pwd = getenv("PWD");
+	if (pwd)
+		return (pwd);
+	pwd = "PWD=";
+	path = ft_strdup(getcwd(cwd, sizeof(cwd)));
+	pwd = ft_strjoin(pwd, path);
+	free(path);
+	return (pwd);
+}
+
 char	**ft_minimal_env(char **envp)
 {
 	char	*pwd;
 	char	*shlvl;
 	char	*underscore;
-	char	*path;
-	char	cwd[PATH_MAX];
 
-	pwd = getenv("PWD");
-	if (!pwd)
-	{
-		pwd = "PWD=";
-		path = ft_strdup(getcwd(cwd, sizeof(cwd)));
-		pwd = ft_strjoin(pwd, path);
-		free(path);
-	}
+	pwd = ft_get_pwd_env();
 	shlvl = getenv("SHLVL");
 	if (!shlvl)
 		shlvl = "SHLVL=1";

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 00:38:52 by sdossa            #+#    #+#             */
-/*   Updated: 2025/09/10 01:16:46 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 20:27:52 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@
 int	count_argv_tokens(char **tokens, int start, int end);
 int	fill_argv(char **tokens, int start, int end, char **argv);
 int	extract_redir(char **tokens, int start, int end, t_redirect **redir);
+char	*reconstruct_quoted_filename(char **tokens, int *i, int end);
 
 #endif

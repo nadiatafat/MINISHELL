@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/11 15:27:55 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/14 20:24:26 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,32 @@ char	*get_variable_value(char *var_name, t_expand_ctx *ctx)
 	if (ft_strcmp(var_name, "?") == 0)
 		return (ft_itoa(ctx->last_exit_code));
 	return (get_env_value(var_name, ctx->env));
+}
+
+int	process_single_var(char **result, int i, t_expand_ctx *ctx)
+{
+	char	*var_name;
+	char	*var_value;
+	char	*new_result;
+	int		var_len;
+
+	var_name = get_var_name(*result, i + 1);
+	if (!var_name)
+		return (i + 1);
+	var_value = get_variable_value(var_name, ctx);
+	var_len = ft_strlen(var_name) + 1;
+	new_result = replace_variable(*result, i, var_len, var_value);
+	if (new_result != *result)
+	{
+		free(*result);
+		*result = new_result;
+		i += ft_strlen(var_value);
+	}
+	else
+		i++;
+	free(var_name);
+	free(var_value);
+	return (i);
 }
 
 /*
