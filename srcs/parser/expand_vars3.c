@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 17:14:11 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 20:43:00 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 20:54:01 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,3 +130,4 @@ int	count_varname_len(char *str, int start)
 	}
 	return (len);
 }
+
