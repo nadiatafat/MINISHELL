@@ -6,12 +6,11 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:28:24 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/14 16:41:36 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:57:33 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /*
 ** Ferme tous les file descriptors de validation
@@ -78,8 +77,8 @@ static void	apply_redir(t_redirect *redir)
 }
 
 /*
-** FONCTION MODIFIÉE: Parcourt et applique toutes les redirections
-** IMPORTANT: Cette fonction ne doit être appelée QUE si validate_all_redirections
+** Parcourt et applique toutes les redirections
+** !! = Cette ft ne doit être appelée QUE si validate_all_redirections
 ** a réussi. Elle réouvre les fichiers et applique les redirections.
 */
 int	handle_redirections(t_redirect *redir)

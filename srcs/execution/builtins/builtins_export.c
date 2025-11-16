@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/27 16:22:17 by ssinanis          #+#    #+#             */
-/*   Updated: 2025/11/13 14:20:12 by sdossa           ###   ########.fr       */
+/*   Created: 2025/01/27 16:22:17 by nadgalle          #+#    #+#             */
+/*   Updated: 2025/11/16 18:01:25 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	ft_replace_env_var(char **envp, char *key, char *value)
 	return (0);
 }
 
-
 int	ft_add_new_env_var(char ***envp, char *key, char *value)
 {
 	size_t	size;
@@ -78,23 +77,22 @@ int	ft_add_new_env_var(char ***envp, char *key, char *value)
 	return (1);
 }
 
-
-int	ft_check_identifier(char **tokens, int *exit_status)
+int	ft_check_identifier_single(char *token, int *exit_status)
 {
 	int	i;
 
 	i = 0;
-	if (!(ft_isalpha(tokens[1][0]) || tokens[1][0] == '_'))
+	if (!(ft_isalpha(token[0]) || token[0] == '_'))
 	{
-		ft_puterror("export", tokens[1], "not a valid identifier");
+		ft_puterror("export", token, "not a valid identifier");
 		*exit_status = 1;
 		return (0);
 	}
-	while (tokens[1][i] && tokens[1][i] != '=')
+	while (token[i] && token[i] != '=')
 	{
-		if (!(ft_isalnum(tokens[1][i]) || tokens[1][i] == '_'))
+		if (!(ft_isalnum(token[i]) || token[i] == '_'))
 		{
-			ft_puterror("export", tokens[1], "not a valid identifier");
+			ft_puterror("export", token, "not a valid identifier");
 			*exit_status = 1;
 			return (0);
 		}
@@ -110,10 +108,19 @@ char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
 	i = 1;
 	if (!tokens[1])
 		return (ft_sort_env(envp, fd));
-	if (!ft_check_identifier(tokens, exit_status))
-		return (envp);
 	while (tokens[i])
 	{
+		if (tokens[i][0] == '\0' || !ft_check_identifier_single(tokens[i],
+			exit_status))
+		{
+			if (tokens[i][0] == '\0')
+			{
+				ft_puterror("export", tokens[i], "not a valid identifier");
+				*exit_status = 1;
+			}
+			i++;
+			continue ;
+		}
 		if (!ft_process_export_token(&envp, tokens[i], exit_status))
 			return (envp);
 		i++;

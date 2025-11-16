@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 07:18:35 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 20:23:03 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 15:10:28 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	process_quotes_in_token(char *line, char *token, int *i, int *j)
 			(*i)++;
 		if (quote == '\'')
 			token[(*j)++] = '\x02';
+		else if (quote == '"')
+			token[(*j)++] = '\x04';
 		token[(*j)++] = line[(*i)++];
 	}
 	if (line[*i] == quote)

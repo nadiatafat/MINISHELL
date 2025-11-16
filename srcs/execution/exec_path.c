@@ -6,10 +6,9 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:26:27 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/14 16:12:25 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:54:06 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -51,8 +50,8 @@ void	ft_check_path(char *path, t_command *command)
 char	**get_path_tab(char **env)
 {
 	char	**paths;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (env[i])
@@ -96,7 +95,7 @@ char	*get_path(char *cmd, char **env)
 {
 	char	**paths;
 	char	*path;
-	int	i;
+	int		i;
 
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));

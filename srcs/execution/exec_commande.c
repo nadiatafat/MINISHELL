@@ -6,12 +6,11 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:37:50 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 15:45:09 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:55:35 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 static void	execute_builtin_child(t_node *node, t_mother_shell *shell)
 {

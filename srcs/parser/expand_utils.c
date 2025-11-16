@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:42:57 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/08 20:30:18 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:41:04 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	is_in_single_quotes(char *str, int pos)
 */
 char	*handle_special_var_cases(char *str, int start)
 {
+	while (str[start] == '\x04')
+		start++;
 	if (str[start] == '?')
 		return (ft_strdup("?"));
 	if (str[start] == '"' || str[start] == '\'' || str[start] == '\0')
@@ -102,30 +104,23 @@ char	*handle_special_var_cases(char *str, int start)
 	return (NULL);
 }
 
-/*
-** Extrait le nom d'une var à partir d'une position donnée.
-** Valide que le nom commence par 1 lettre ou '_' et contient des char alpha.
-** Return le nom de la var ou NULL si format invalide.
-*/
-char	*get_var_name(char *str, int start)
+char	*extract_varname(char *str, int start, int len)
 {
-	char	*special_case;
-	int		len;
 	char	*name;
+	int		i;
+	int		j;
 
-	if (!str || !str[start])
+	name = malloc(len + 1);
+	if (!name)
 		return (NULL);
-	special_case = handle_special_var_cases(str, start);
-	if (special_case)
-		return (special_case);
-	len = 0;
-	if (!ft_isalpha(str[start]) && str[start] != '_')
-		return (NULL);
-	while (str[start + len] && (ft_isalnum(str[start + len])
-			|| str[start + len] == '_'))
-		len++;
-	if (len == 0)
-		return (NULL);
-	name = ft_substr(str, start, len);
+	i = 0;
+	j = 0;
+	while (i < len)
+	{
+		if (str[start + i] != '\x04')
+			name[j++] = str[start + i];
+		i++;
+	}
+	name[j] = '\0';
 	return (name);
 }

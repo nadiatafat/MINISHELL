@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:50:31 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 19:56:09 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 18:28:41 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,33 @@ int	count_tokens_for_expansion(char **tokens)
 	return (token_count);
 }
 
-static int	process_expanded_token(char **exp, int j, char *temp, int has_q)
+static int	check_has_quotes(char *token)
 {
-	char	**split_result;
-	int		k;
+	if (ft_strchr(token, '\'') || ft_strchr(token, '"')
+		|| ft_strchr(token, '\x02') || ft_strchr(token, '\x03')
+		|| ft_strchr(token, '\x04'))
+		return (1);
+	return (0);
+}
 
-	if (!has_q && temp[0] && ft_strchr(temp, ' '))
+static int	process_token_loop(char **tokens, char **expanded,
+	t_expand_ctx *ctx)
+{
+	char	*temp;
+	int		i;
+	int		j;
+	int		has_q;
+
+	i = -1;
+	j = 0;
+	while (tokens[++i])
 	{
-		split_result = ft_split(temp, ' ');
-		if (split_result)
-		{
-			k = 0;
-			while (split_result[k])
-			{
-				if (split_result[k][0])
-					exp[j++] = ft_strdup(split_result[k]);
-				k++;
-			}
-			free_tokens(split_result);
-		}
-		free(temp);
+		has_q = check_has_quotes(tokens[i]);
+		temp = expand_token(tokens[i], ctx);
+		if (!temp)
+			return (-1);
+		j = process_expanded_token(expanded, j, temp, has_q);
 	}
-	else if (temp[0])
-		exp[j++] = temp;
-	else
-		free(temp);
 	return (j);
 }
 
@@ -64,10 +66,7 @@ static int	process_expanded_token(char **exp, int j, char *temp, int has_q)
 char	**expand_tokens(char **tokens, t_expand_ctx *ctx)
 {
 	char	**expanded;
-	char	*temp;
-	int		i;
 	int		j;
-	int		has_q;
 
 	if (!tokens || !ctx)
 		return (NULL);
@@ -75,16 +74,9 @@ char	**expand_tokens(char **tokens, t_expand_ctx *ctx)
 			(count_tokens_for_expansion(tokens) * 10) + 1);
 	if (!expanded)
 		return (NULL);
-	i = -1;
-	j = 0;
-	while (tokens[++i])
-	{
-		has_q = (ft_strchr(tokens[i], '\'') || ft_strchr(tokens[i], '"'));
-		temp = expand_token(tokens[i], ctx);
-		if (!temp)
-			return (free_tokens(expanded), NULL);
-		j = process_expanded_token(expanded, j, temp, has_q);
-	}
+	j = process_token_loop(tokens, expanded, ctx);
+	if (j == -1)
+		return (free_tokens(expanded), NULL);
 	expanded[j] = NULL;
 	return (expanded);
 }
@@ -121,7 +113,8 @@ char	*clean_escape_markers(char *result)
 	j = 0;
 	while (result[i])
 	{
-		if (result[i] == '\x02')
+		if (result[i] == '\x02' || result[i] == '\x03'
+			|| result[i] == '\x04')
 			i++;
 		else
 			result[j++] = result[i++];
@@ -129,33 +122,3 @@ char	*clean_escape_markers(char *result)
 	result[j] = '\0';
 	return (result);
 }
-
-/*
-** Traite une variable à position donnée et avance le curseur.
-** Extrait nom, récupère valeur, fait remplacement et calcule nouvelle pos.
-*
-int	process_single_var(char **result, int i, t_expand_ctx *ctx)
-{
-	char	*var_name;
-	char	*var_value;
-	char	*new_result;
-	int		var_len;
-
-	var_name = get_var_name(*result, i + 1);
-	if (!var_name)
-		return (i + 1);
-	var_value = get_variable_value(var_name, ctx);
-	var_len = ft_strlen(var_name) + 1;
-	new_result = replace_variable(*result, i, var_len, var_value);
-	if (new_result != *result)
-	{
-		free(*result);
-		*result = new_result;
-		i += ft_strlen(var_value);
-	}
-	else
-		i++;
-	free(var_name);
-	free(var_value);
-	return (i);
-}*/

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:39:08 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/13 14:18:27 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 18:00:49 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_swap(char **s1, char **s2)
 	*s1 = *s2;
 	*s2 = tmp;
 }
-
 
 char	**ft_sort_env(char **env, int output_fd)
 {

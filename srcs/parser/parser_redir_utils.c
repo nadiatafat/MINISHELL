@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 03:59:34 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 21:01:41 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:50:35 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,4 +115,3 @@ int	extract_redir(char **tokens, int start, int end, t_redirect **redir)
 	}
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 15:01:08 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 18:18:13 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 	while (j < i)
 	{
 		shell->env[j] = ft_strdup(envp[j]);
-		// AJOUT: Vérification de la copie complète
 		if (!shell->env[j] || ft_strlen(shell->env[j]) != ft_strlen(envp[j]))
 		{
 			fprintf(stderr, "Error: env var truncated: %s\n", envp[j]);
@@ -62,11 +61,7 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 		}
 		j++;
 	}
-	/* Variables de test pour l'expansion
-	shell->env[i] = ft_strdup("A=1");
-	shell->env[i + 1] = ft_strdup("B=");
-	shell->env[i + 2] = ft_strdup("C=3");*/
-	shell->env[i + 3] = NULL;/* CRITIQUE : Terminateur obligatoire */
+	shell->env[i + 3] = NULL;
 }
 
 /*

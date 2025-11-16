@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:28:24 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/14 17:48:32 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:58:38 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	infile_redirection(t_command *command)
 	apply_fd_to_stdio(fd, STDIN_FILENO, "dup2 input", command);
 }
 
-
 void	outfile_truncate_redirection(t_command *command)
 {
 	t_redirect	*cur;
@@ -98,66 +97,3 @@ void	outfile_append_redirection(t_command *command)
 	}
 	apply_fd_to_stdio(fd, STDOUT_FILENO, "dup2 append", command);
 }
-
-
-/*
-** Les fonctions ci-dessous sont conservées pour compatibilité
-** mais ne devraient plus être utilisées directement
-*
-static void check_permission(t_command *command, int write_flag)
-{
-	t_redirect *redir;
-
-	if (!command || !command->redir)
-		return;
-	redir = command->redir;
-
-	if (write_flag == 0) // lecture
-	{
-		if (access(redir->filename, F_OK) != 0 || access(redir->filename, R_OK) != 0)
-		{
-			if (access(redir->filename, F_OK) == 0)
-				ft_exit_free("Permission denied", EXIT_FAILURE, command);
-			ft_exit_free(redir->filename, EXIT_FAILURE, command);
-		}
-	}
-	else // écriture
-	{
-		if (access(redir->filename, F_OK) == 0 && access(redir->filename, W_OK) != 0)
-			ft_exit_free("Permission denied", EXIT_FAILURE, command);
-	}
-}
-
-
-
-static int	open_and_check_infile(t_redirect *cur, t_command *command, int fd)
-{
-	if (fd != -1)
-		close(fd);
-	check_permission(command, 0);
-	fd = open(cur->filename, O_RDONLY);
-	if (fd == -1)
-		ft_exit_free(cur->filename, EXIT_FAILURE, command);
-	return (fd);
-}
-
-void	infile_redirection(t_command *command)
-{
-	t_redirect	*cur;
-	int			fd;
-
-	cur = command->redir;
-	fd = -1;
-	while (cur)
-	{
-		if (cur->type == REDIR_IN && cur->filename)
-			fd = open_and_check_infile(cur, command, fd);
-		cur = cur->next;
-	}
-	if (fd != -1)
-	{
-		if (dup2(fd, STDIN_FILENO) == -1)
-			ft_exit_free("dup2 input", EXIT_FAILURE, command);
-		close(fd);
-	}
-}*/

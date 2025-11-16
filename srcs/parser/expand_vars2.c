@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 20:24:26 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:21:31 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int	process_single_var(char **result, int i, t_expand_ctx *ctx)
 	if (!var_name)
 		return (i + 1);
 	var_value = get_variable_value(var_name, ctx);
-	var_len = ft_strlen(var_name) + 1;
+	var_len = calculate_var_len_with_markers(*result, i + 1,
+			ft_strlen(var_name)) + 1;
 	new_result = replace_variable(*result, i, var_len, var_value);
 	if (new_result != *result)
 	{
@@ -119,5 +120,5 @@ char	*process_token_variables(char *result, t_expand_ctx *ctx)
 		else
 			i++;
 	}
-	return (clean_escape_markers(result));
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:28:09 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 17:46:52 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 14:17:22 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ char		**ft_sort_env(char **env, int output_fd);
 int	ft_extract_key_value(char *token, char **key, char **value);
 int	ft_replace_env_var(char **envp, char *key, char *value);
 int	ft_add_new_env_var(char ***envp, char *key, char *value);
-int	ft_check_identifier(char **tokens, int *exit_status);
+int	ft_check_identifier_single(char *token, int *exit_status);
 char	**ft_export(char **envp, char **tokens, int *exit_status, int fd);
 void	ft_pwd(int output_fd, char **tokens, int *exit_code);
 char	**ft_unset(char **envp, char **tokens, int *exit_status);

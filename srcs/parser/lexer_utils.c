@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:54:07 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 18:23:58 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 18:32:41 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static int	get_operator_len(char *line)
 
 /*
 ** Calcule length d'un token dans ligne de commande.
-** Traite d'abord les cas spéciaux (opérateurs, quotes).
-** Sinon compte jusqu'au prochain délimiteur (espace, pipe, redir).
+** Traite d'abord les cas spÃ©ciaux (opÃ©rateurs, quotes).
+** Sinon compte jusqu'au prochain dÃ©limiteur (espace, pipe, redir).
 */
 int	token_len(char *line)
 {
@@ -85,6 +85,7 @@ char	*copy_token(char *line, int len)
 	char	*token;
 	int		i;
 	int		j;
+	int		start_j;
 
 	token = malloc((len * 2) + 1);
 	if (!token)
@@ -94,7 +95,12 @@ char	*copy_token(char *line, int len)
 	while (i < len)
 	{
 		if (line[i] == '\'' || line[i] == '"')
+		{
+			start_j = j;
 			process_quotes_in_token(line, token, &i, &j);
+			if (j == start_j)
+				token[j++] = '\x03';
+		}
 		else
 			token[j++] = line[i++];
 	}
@@ -103,8 +109,8 @@ char	*copy_token(char *line, int len)
 }
 
 /*
-** Free chaque token individuellement puis le tab lui-même.
-** Check que le tab n'est pas NULL avant de procéder.
+** Free chaque token individuellement puis le tab lui-mÃªme.
+** Check que le tab n'est pas NULL avant de procÃ©der.
 */
 void	free_tokens(char **tokens)
 {

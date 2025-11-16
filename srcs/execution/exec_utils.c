@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:33:45 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/14 17:43:52 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 17:54:45 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	free_command_redirections(t_command *command)
 	t_redirect	*tmp;
 
 	if (!command || !command->redir)
-		return;
+		return ;
 	redir = command->redir;
 	while (redir)
 	{
@@ -66,7 +66,7 @@ static void	free_command_redirections(t_command *command)
 void	ft_free_command(t_command *command)
 {
 	if (!command)
-		return;
+		return ;
 	if (command->argv)
 		free_tokens(command->argv);
 	free_command_redirections(command);

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:31:26 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/14 16:17:47 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 18:48:22 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ char	*ft_get_heredoc_filename(int index)
 ** Si c'est le dernier heredoc, ouvre aussi le fichier en lecture
 ** pour le rediriger plus tard sur STDIN.
 */
-static int	create_tmp_file(t_command *command, t_redirect *cur, char *tmp_path, int tmpfile_fd)
+static int	create_tmp_file(t_command *command, t_redirect *cur, char *tmp_path,
+	int tmpfile_fd)
 {
 	char	*limiter_n;
 	int		write_fd;
@@ -115,7 +116,7 @@ void	prepare_heredocs(t_node *node)
 	t_redirect	*r;
 
 	if (!node)
-		return;
+		return ;
 	if (node->type == NODE_COMMAND && node->command)
 	{
 		r = node->command->redir;
