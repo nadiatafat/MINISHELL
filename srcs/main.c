@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 18:18:13 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 20:54:37 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,3 +104,4 @@ int	main(int argc, char **argv, char **envp)
 	free_shell(&shell);
 	return (0);
 }
+

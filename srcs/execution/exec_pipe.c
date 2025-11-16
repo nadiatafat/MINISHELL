@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:18:14 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/14 15:54:14 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/16 20:54:54 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,3 +99,4 @@ int	execute_ast(t_node *node, t_mother_shell *shell)
 		return (execute_pipe(node, shell));
 	return (0);
 }
+
