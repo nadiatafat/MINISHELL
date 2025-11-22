@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 12:31:26 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/16 18:48:22 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/21 13:03:50 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,17 @@ static int	ft_open_file(char *path, int open_flag, t_command *command)
 {
 	int	fd;
 
-	if (open_flag == 0)
-		fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else
-		fd = open(path, O_RDONLY);
-	if (fd == -1)
-		ft_exit_free(path, EXIT_FAILURE, command);
-	return (fd);
+	if (path)
+	{
+		if (open_flag == 0)
+			fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		else
+			fd = open(path, O_RDONLY);
+		if (fd == -1)
+			ft_exit_free(path, EXIT_FAILURE, command);
+		return (fd);
+	}
+	return (-1);
 }
 
 /*
@@ -108,31 +112,88 @@ int	get_heredoc(t_command *command)
 		}
 		cur = cur->next;
 	}
+	//printf("%s", tmp_path);
 	return (tmpfile_fd);
 }
 
-void	prepare_heredocs(t_node *node)
-{
-	t_redirect	*r;
 
+
+
+
+/*
+** Gère tous les heredocs d'une commande :
+** - crée un fichier temporaire pour chacun (/tmp/heredoc_X)
+** - lit leur contenu depuis stdin
+** - garde le dernier heredoc ouvert en lecture (pour stdin)
+** - supprime les fichiers temporaires (unlink)
+*
+int	get_heredoc(t_command *command)
+{
+	t_redirect	*cur;
+	int			i;
+	int			tmpfile_fd;
+	char		*tmp_path;
+
+	cur = command->redir;
+	i = 0;
+	tmpfile_fd = -1;
+	while (cur)
+	{
+		if (cur->type == REDIR_HEREDOC)
+		{
+			tmp_path = ft_get_heredoc_filename(i++);
+			if (!tmp_path)
+				ft_exit_free("heredoc filename", EXIT_FAILURE, command);
+			tmpfile_fd = create_tmp_file(command, cur, tmp_path, tmpfile_fd);
+			// cur->filename = ft_strdup(tmp_path);
+			free(tmp_path);
+		}
+		cur = cur->next;
+	}
+	printf("%s", tmp_path);
+	return (tmpfile_fd);
+}*/
+
+
+// void	prepare_heredocs(t_node *node)
+// {
+// 	t_redirect	*r;
+
+// 	if (!node)
+// 		return ;
+// 	if (node->type == NODE_COMMAND && node->command)
+// 	{
+// 		r = node->command->redir;
+// 		while (r)
+// 		{
+// 			if (r->type == REDIR_HEREDOC)
+// 			{
+// 				// Stocker le FD dans la command
+// 				// (tu dois ajouter un champ heredoc_fd dans t_command)
+// 			}
+// 			r = r->next;
+// 		}
+// 	}
+// 	else if (node->type == NODE_PIPE)
+// 	{
+// 		prepare_heredocs(node->left);
+// 		prepare_heredocs(node->right);
+// 	}
+// }
+
+/*void	prepare_heredocs(t_node *node)
+{
 	if (!node)
 		return ;
+
 	if (node->type == NODE_COMMAND && node->command)
 	{
-		r = node->command->redir;
-		while (r)
-		{
-			if (r->type == REDIR_HEREDOC)
-			{
-				// Stocker le FD dans la command
-				// (tu dois ajouter un champ heredoc_fd dans t_command)
-			}
-			r = r->next;
-		}
+		// Appeler get_heredoc une seule fois par commande
+		node->command->redir->heredoc_fd = get_heredoc(node->command);
 	}
 	else if (node->type == NODE_PIPE)
 	{
 		prepare_heredocs(node->left);
 		prepare_heredocs(node->right);
 	}
-}
+}*/

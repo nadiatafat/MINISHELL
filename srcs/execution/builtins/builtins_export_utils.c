@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:39:08 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/16 18:00:49 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 14:06:44 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**ft_sort_env(char **env, int output_fd)
 	char	**envp;
 
 	i = 0;
-	len = 0;
+	//*len = 0;
 	envp = ft_duplicate_env(env);
 	while (envp[i] && envp[i + 1])
 	{

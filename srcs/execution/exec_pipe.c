@@ -6,28 +6,47 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 20:18:14 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 20:54:54 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/22 12:03:12 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "lexer_utils.h"
+
+static void	cleanup_and_exit(t_mother_shell *shell, int status)
+{
+	if (shell && shell->last_expanded_tokens)
+	{
+		free_tokens(shell->last_expanded_tokens);
+		shell->last_expanded_tokens = NULL;
+	}
+	if (shell)
+		free_shell(shell);
+	rl_clear_history();
+	close_inherited_fds();
+	exit(status);
+}
 
 static void	execute_pipe_left(t_node *node, t_mother_shell *shell, int *pipefd)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	close(pipefd[0]);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 	execute_ast(node->left, shell);
-	exit(shell->last_status);
+	cleanup_and_exit(shell, shell->last_status);
 }
 
 static void	execute_pipe_right(t_node *node, t_mother_shell *shell, int *pipefd)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	close(pipefd[1]);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
 	execute_ast(node->right, shell);
-	exit(shell->last_status);
+	cleanup_and_exit(shell, shell->last_status);
 }
 
 /*
@@ -54,6 +73,16 @@ int	execute_pipe(t_node *node, t_mother_shell *shell)
 	waitpid(pid2, &status, 0);
 	if (WIFEXITED(status))
 		shell->last_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		shell->last_status = 128 + WTERMSIG(status);
+		if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_putstr_fd(RED, STDERR_FILENO);
+			ft_putstr_fd("Quit (core dumped)", STDERR_FILENO);
+			ft_putendl_fd(RESET, STDERR_FILENO);
+		}
+	}
 	return (0);
 }
 
@@ -66,6 +95,7 @@ int	check_redirections_validity(t_redirect *redir)
 	t_redirect	*current;
 	int			fd;
 
+	fd = -1;
 	current = redir;
 	while (current)
 	{
@@ -91,6 +121,8 @@ int	check_redirections_validity(t_redirect *redir)
 */
 int	execute_ast(t_node *node, t_mother_shell *shell)
 {
+	(void)shell;
+	(void)node;
 	if (!node)
 		return (0);
 	if (node->type == NODE_COMMAND)
@@ -99,4 +131,5 @@ int	execute_ast(t_node *node, t_mother_shell *shell)
 		return (execute_pipe(node, shell));
 	return (0);
 }
+
 

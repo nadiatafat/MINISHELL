@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 14:12:50 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/16 16:59:24 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 13:59:43 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ char	**ft_unset(char **envp, char **tokens, int *exit_status)
 
 int	ft_check_option(int *exit_status, char **tokens)
 {
-	int	i;
-
-	i = 0;
 	if (tokens[1])
 	{
 		if (tokens[1][0] == '-')

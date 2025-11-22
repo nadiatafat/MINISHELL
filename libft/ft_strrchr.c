@@ -3,16 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdossa <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 09:29:52 by sdossa            #+#    #+#             */
-/*   Updated: 2024/12/03 16:46:11 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 14:42:43 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_crash_func(void)
+char	*ft_strrchr(const char *s, int c)
+{
+	char	*end;
+	int		s_len;
+
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	end = (char *)s + s_len;
+	if (c == '\0')
+		return ((char *)end);
+	while (end >= s)
+	{
+		if (*end == (char)c)
+			return (end);
+		end--;
+	}
+	return (NULL);
+}
+
+/* static void	ft_crash_func(void)
 {
 	int	*ptr;
 
@@ -38,7 +58,7 @@ char	*ft_strrchr(const char *s, int c)
 		end--;
 	}
 	return (NULL);
-}
+} */
 
 /*char	*ft_strrchr(const char *string, int find)
 {

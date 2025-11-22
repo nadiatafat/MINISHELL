@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:51:23 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 17:21:31 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/21 16:04:06 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,20 @@ char	*join_three_strings(char *s1, char *s2, char *s3)
 */
 char	*get_variable_value(char *var_name, t_expand_ctx *ctx)
 {
+	char	*value;
+
 	if (ft_strcmp(var_name, "?") == 0)
 		return (ft_itoa(ctx->last_exit_code));
-	return (get_env_value(var_name, ctx->env));
+	if (ft_strcmp(var_name, "UID") == 0)
+		return (ft_itoa(getuid()));
+	if (ft_strcmp(var_name, "EUID") == 0)
+		return (ft_itoa(geteuid()));
+	value = get_env_value(var_name, ctx->env);
+	if (!value && (ft_strcmp(var_name, "USER") == 0
+		|| ft_strcmp(var_name, "HOME") == 0
+		|| ft_strcmp(var_name, "PWD") == 0))
+		return (ft_strdup(""));
+	return (value);
 }
 
 int	process_single_var(char **result, int i, t_expand_ctx *ctx)

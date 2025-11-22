@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:54:07 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 18:32:41 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/19 14:39:52 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,15 @@ int	token_len(char *line)
 	while (line[len] && line[len] != ' ' && line[len] != '|'
 		&& line[len] != '<' && line[len] != '>')
 	{
-		if (line[len] == '\'' || line[len] == '"')
+		if (line[len] == '$' && line[len + 1] == '\'')
+		{
+			len += 2;
+			while (line[len] && line[len] != '\'')
+				len++;
+			if (line[len] == '\'')
+				len++;
+		}
+		else if (line[len] == '\'' || line[len] == '"')
 		{
 			quote_len = count_quote_content(&line[len], line[len]);
 			if (quote_len == -1)
@@ -94,12 +102,32 @@ char	*copy_token(char *line, int len)
 	j = 0;
 	while (i < len)
 	{
-		if (line[i] == '\'' || line[i] == '"')
+		if (line[i] == '$' && line[i + 1] == '\'')
+		{
+			i += 2;
+			while (i < len && line[i] != '\'')
+			{
+				token[j++] = '\x02';
+				token[j++] = line[i++];
+			}
+			if (line[i] == '\'')
+				i++;
+		}
+		else if (line[i] == '\'' || line[i] == '"')
 		{
 			start_j = j;
 			process_quotes_in_token(line, token, &i, &j);
 			if (j == start_j)
 				token[j++] = '\x03';
+			else if (i < len && (line[i] == '\'' || line[i] == '"'))
+				token[j++] = '\x03';
+		}
+		else if (line[i] == '\\' && line[i + 1])
+		{
+			i++;
+			if (line[i] == '$')
+				token[j++] = '\x02';
+			token[j++] = line[i++];
 		}
 		else
 			token[j++] = line[i++];

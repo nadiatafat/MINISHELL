@@ -114,10 +114,12 @@ static char	**fill_tokens(char *line, char **tokens)
 char	**lexer_split(char *line)
 {
 	char	**tokens;
+	int		token_count;
 
 	if (!check_closed_quotes(line))
 		return (NULL);
-	tokens = malloc(sizeof(char *) * (count_tokens(line) + 1));
+	token_count = count_tokens(line);
+	tokens = ft_calloc(token_count + 1, sizeof(char *));
 	if (!tokens)
 		return (NULL);
 	if (!fill_tokens(line, tokens))

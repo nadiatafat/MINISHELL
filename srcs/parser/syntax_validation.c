@@ -20,8 +20,17 @@
 */
 int	is_pipe(char *token)
 {
+	int	i;
+
 	if (!token)
 		return (0);
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '\x02' || token[i] == '\x03' || token[i] == '\x04')
+			return (0);
+		i++;
+	}
 	return (ft_strcmp(token, "|") == 0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 14:50:40 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 18:07:34 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/19 16:42:15 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,7 @@ char	**ft_add_to_array(char **arr, char *str)
 	return (new_arr);
 }
 
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size, int free_flag)
-{
-	void	*new_ptr;
 
-	(void)old_size;
-	new_ptr = malloc(new_size);
-	if (!new_ptr)
-		return (NULL);
-	if (ptr)
-	{
-		ft_memcpy(new_ptr, ptr, old_size);
-		if (free_flag)
-			free(ptr);
-	}
-	return (new_ptr);
-}
 
 void	ft_free_tab(char **tab)
 {

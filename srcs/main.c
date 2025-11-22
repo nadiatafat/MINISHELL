@@ -6,12 +6,14 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 13:29:02 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 20:54:37 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/21 12:53:13 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "shell_loop.h"
+#include "node_cmd.h"
+#include "lexer_utils.h"
 
 volatile sig_atomic_t	g_sigint_received = 0;
 
@@ -42,12 +44,20 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 	int	i;
 	int	j;
 
+	if (!envp || !envp[0])
+	{
+		shell->env = ft_minimal_env(envp);
+		return ;
+	}
+
 	shell->ast = NULL;
+	shell->line = NULL;
 	shell->last_status = 0;
+	shell->last_expanded_tokens = NULL;
 	i = 0;
 	while (envp[i])
 		i++;
-	shell->env = malloc(sizeof(char *) * (i + 10));
+	shell->env = malloc(sizeof(char *) * (i + 1));
 	if (!shell->env)
 		exit(1);
 	j = 0;
@@ -61,7 +71,7 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 		}
 		j++;
 	}
-	shell->env[i + 3] = NULL;
+	shell->env[i] = NULL;
 }
 
 /*
@@ -69,7 +79,7 @@ static void	init_shell(t_mother_shell *shell, char **envp)
 ** Free chaque var d'env puis le tab principal.
 ** Évite les fuites mémoire à la fermeture du programme ;).
 */
-static void	free_shell(t_mother_shell *shell)
+/*static*/ void	free_shell(t_mother_shell *shell)
 {
 	int	i;
 
@@ -83,6 +93,12 @@ static void	free_shell(t_mother_shell *shell)
 		}
 		free(shell->env);
 	}
+	if (shell->line)
+		free(shell->line);
+	if (shell->ast)
+		free_node(shell->ast);
+	if (shell->last_expanded_tokens)
+		free_tokens(shell->last_expanded_tokens);
 }
 
 /*
@@ -101,7 +117,8 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	rl_bind_key('\t', rl_insert);
 	shell_loop(&shell);
+	rl_clear_history();
 	free_shell(&shell);
-	return (0);
+	return (shell.last_status);
 }
 

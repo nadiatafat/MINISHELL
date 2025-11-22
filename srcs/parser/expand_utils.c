@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 17:42:57 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 17:41:04 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/19 16:05:08 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ char	*handle_special_var_cases(char *str, int start)
 		start++;
 	if (str[start] == '?')
 		return (ft_strdup("?"));
-	if (str[start] == '"' || str[start] == '\'' || str[start] == '\0')
+	if (str[start] == '"' || str[start] == '\'' || str[start] == '\0'
+		|| str[start] == '\x03')
 		return (ft_strdup(""));
 	if (ft_isdigit(str[start]))
 		return (ft_substr(str, start, 1));

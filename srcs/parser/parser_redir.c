@@ -21,8 +21,17 @@
 */
 int	is_redirection(char *token)
 {
+	int	i;
+
 	if (!token)
 		return (0);
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '\x02' || token[i] == '\x03' || token[i] == '\x04')
+			return (0);
+		i++;
+	}
 	if (ft_strcmp(token, "<<") == 0)
 		return (REDIR_HEREDOC);
 	if (ft_strcmp(token, ">>") == 0)

@@ -3,16 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdossa <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 09:32:40 by sdossa            #+#    #+#             */
-/*   Updated: 2024/11/29 20:25:40 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 14:43:11 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_crash_func(void)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+{
+	size_t		i;
+	size_t		needle_len;
+
+	if (!haystack || !needle)
+		return (NULL);
+	if (!*needle)
+		return ((char *)haystack);
+	needle_len = ft_strlen(needle);
+	if (len < needle_len)
+		return (NULL);
+	i = 0;
+	while (i <= len - needle_len && haystack[i])
+	{
+		if (ft_strncmp(&haystack[i], needle, needle_len) == 0)
+			return ((char *)&haystack[i]);
+		i++;
+	}
+	return (NULL);
+}
+
+/*static void	ft_crash_func(void)
 {
 	int	*ptr;
 
@@ -40,7 +62,7 @@ char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 		i++;
 	}
 	return (NULL);
-}
+}*/
 
 /*char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 {

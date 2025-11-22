@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 12:28:24 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/16 17:58:38 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 14:19:24 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	check_and_open_file(t_command *cmd, t_redirect *cur, int flags,
 	t_redirect	*redir;
 
 	redir = cmd->redir;
-	if (flags == O_RDONLY)
+	if (flags == O_RDONLY && redir->filename)
 	{
 		if (access(redir->filename, F_OK) != 0
 			|| access(redir->filename, R_OK) != 0)
@@ -28,7 +28,7 @@ static void	check_and_open_file(t_command *cmd, t_redirect *cur, int flags,
 			ft_exit_free(redir->filename, EXIT_FAILURE, cmd);
 		}
 	}
-	else if (access(redir->filename, F_OK) == 0
+	else if (redir->filename && access(redir->filename, F_OK) == 0
 		&& access(redir->filename, W_OK) != 0)
 		ft_exit_free("Permission denied", EXIT_FAILURE, cmd);
 	if (*fd != -1)

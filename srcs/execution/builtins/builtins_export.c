@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 16:22:17 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/16 18:01:25 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/22 14:53:33 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,36 @@ int	ft_check_identifier_single(char *token, int *exit_status)
 	return (1);
 }
 
+
 char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
+{
+	size_t	i;
+
+	if (!tokens[1])
+		return (ft_sort_env(envp, fd));
+	i = 1;
+	while (tokens[i])
+	{
+		if (tokens[i][0] == '-')
+		{
+			ft_puterror("export", tokens[i], "invalid option");
+			*exit_status = 2;
+		}
+		else if (tokens[i][0] != '\0'
+			&& ft_check_identifier_single(tokens[i], exit_status)
+			&& !ft_process_export_token(&envp, tokens[i], exit_status))
+			return (envp);
+		else if (tokens[i][0] == '\0')
+		{
+			ft_puterror("export", tokens[i], "not a valid identifier");
+			*exit_status = 1;
+		}
+		i++;
+	}
+	return (envp);
+}
+
+/*char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
 {
 	size_t	i;
 
@@ -110,6 +139,13 @@ char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
 		return (ft_sort_env(envp, fd));
 	while (tokens[i])
 	{
+		if (tokens[i][0] == '-')
+		{
+			ft_puterror("export", tokens[i], "invalid option");
+			*exit_status = 2;
+			i++;
+			continue ;
+		}
 		if (tokens[i][0] == '\0' || !ft_check_identifier_single(tokens[i],
 			exit_status))
 		{
@@ -126,4 +162,4 @@ char	**ft_export(char **envp, char **tokens, int *exit_status, int fd)
 		i++;
 	}
 	return (envp);
-}
+}*/

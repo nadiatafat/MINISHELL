@@ -6,13 +6,37 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 09:26:10 by sdossa            #+#    #+#             */
-/*   Updated: 2025/07/18 14:22:03 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 14:35:14 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	ft_crash_func(void)
+size_t  ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+    size_t  src_len;
+    size_t  dst_len;
+    size_t  copy_len;
+    char    *pdst;
+
+	if (dstsize == 0)
+        return (ft_strlen(src));
+    src_len = ft_strlen(src);
+    pdst = dst;
+    while (*pdst != '\0' && (size_t)(pdst - dst) < dstsize)
+        pdst++;
+    dst_len = pdst - dst;
+    if (dst_len >= dstsize)
+        return (dstsize + src_len);
+    copy_len = dstsize - dst_len - 1;
+    if (copy_len > src_len)
+        copy_len = src_len;
+    ft_memcpy(pdst, src, copy_len);
+	pdst[copy_len] = '\0';
+    return (dst_len + src_len);
+}
+
+/*static void	ft_crash_func(void)
 {
 	int	*ptr;
 
@@ -20,7 +44,7 @@ static void	ft_crash_func(void)
 	*ptr = 42;
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	src_len;
 	size_t	dst_len;
@@ -42,7 +66,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	ft_memcpy(pdst, src, copy_len);
 	pdst[copy_len] = '\0';
 	return (dst_len + src_len);
-}
+} */
 
 /*size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {

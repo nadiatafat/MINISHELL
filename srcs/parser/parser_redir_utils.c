@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 03:59:34 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/16 17:50:35 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 17:09:34 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ int	count_argv_tokens(char **tokens, int start, int end)
 	return (count);
 }
 
+static void	free_partial_argv(char **argv, int count)
+{
+	while (count > 0)
+	{
+		count--;
+		free(argv[count]);
+	}
+}
+
 /*
 ** Copie dans argv uniquement les tokens non-redirections.
 ** Les opérateurs (<, >, >>, <<) et leurs cibles sont ignorés.
@@ -62,7 +71,10 @@ int	fill_argv(char **tokens, int start, int end, char **argv)
 		{
 			argv[argv_index] = ft_strdup(tokens[i]);
 			if (!argv[argv_index])
+			{
+				free_partial_argv(argv, argv_index);
 				return (-1);
+			}
 			argv_index++;
 			i++;
 		}

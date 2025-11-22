@@ -36,12 +36,23 @@ int	count_tokens_from(char **tokens, int start)
 int	find_next_pipe(char **tokens, int start)
 {
 	int	i;
+	int	j;
 
 	i = start;
 	while (tokens[i])
 	{
 		if (ft_strcmp(tokens[i], "|") == 0)
-			return (i);
+		{
+			j = 0;
+			while (tokens[i][j])
+			{
+				if (tokens[i][j] >= 1 && tokens[i][j] <= 4)
+					break ;
+				j++;
+			}
+			if (!tokens[i][j])
+				return (i);
+		}
 		i++;
 	}
 	return (-1);

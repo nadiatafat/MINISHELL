@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 11:41:06 by nadgalle          #+#    #+#             */
-/*   Updated: 2025/11/12 19:07:43 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/19 13:49:09 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ int	ft_isbuiltin(char *str)
 		return (1);
 	else if (ft_strncmp(str, "exit", 4) == 0 && ft_strlen(str) == 4)
 		return (1);
+	else if (ft_strncmp(str, ":", 1) == 0 && ft_strlen(str) == 1)
+		return (1);
 	return (0);
 }
 
-void	ft_exebuiltin(char **tokens, char ***envp, int *exit_status, int fd)
+void	ft_exebuiltin(char **tokens, char ***envp, int *exit_status, int fd, t_mother_shell *shell)
 {
 	*exit_status = 0;
 	if (ft_strcmp(tokens[0], "echo") == 0)
@@ -39,7 +41,10 @@ void	ft_exebuiltin(char **tokens, char ***envp, int *exit_status, int fd)
 	else if (ft_strcmp(tokens[0], "pwd") == 0)
 		ft_pwd(fd, tokens, exit_status);
 	else if (ft_strcmp(tokens[0], "env") == 0)
-		ft_env(*envp, fd);
+	{
+		if (ft_env(*envp, fd, tokens))
+			ft_exit(tokens, exit_status, shell);
+	}
 	else if (ft_strcmp(tokens[0], "cd") == 0)
 		ft_cd_invalid_opt(tokens, exit_status, *envp);
 	else if (ft_strcmp(tokens[0], "export") == 0)
@@ -47,7 +52,9 @@ void	ft_exebuiltin(char **tokens, char ***envp, int *exit_status, int fd)
 	else if (ft_strcmp(tokens[0], "unset") == 0)
 		*envp = ft_unset(*envp, tokens, exit_status);
 	else if (ft_strcmp(tokens[0], "exit") == 0)
-		ft_exit(tokens, exit_status);
+		ft_exit(tokens, exit_status, shell);
+	else if (ft_strcmp(tokens[0], ":") == 0)
+		return ;
 }
 
 int	ft_error_builtin(char *path, char *error, int error_code, int *exit_code)

@@ -6,7 +6,7 @@
 /*   By: sdossa <sdossa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 20:19:45 by sdossa            #+#    #+#             */
-/*   Updated: 2025/11/08 14:05:46 by sdossa           ###   ########.fr       */
+/*   Updated: 2025/11/17 16:39:37 by sdossa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_node	*add_command_to_tree(t_node *root, char **tokens, int start, int end)
 
 	cmd = new_command(tokens, start, end);
 	if (!cmd)
-		return (NULL);
+		return (free_node(root), NULL);
 	cmd_node = new_command_node(cmd);
 	if (!cmd_node)
 	{

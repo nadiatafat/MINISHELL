@@ -25,14 +25,15 @@ int		count_tokens_for_expansion(char **tokens);
 char	**expand_tokens(char **tokens, t_expand_ctx *ctx);
 char	*expand_token(char *token, t_expand_ctx *ctx);
 char	*clean_escape_markers(char *result);
+char	*clean_final_marker(char *str);
 
 char	*join_three_strings(char *s1, char *s2, char *s3);
 char	*process_token_variables(char *result, t_expand_ctx *ctx);
 int		process_single_var(char **result, int i, t_expand_ctx *ctx);
 
 int		calculate_var_len_with_markers(char *str, int start, int var_name_len);
-int		split_and_add_tokens(char **exp, int j, char *temp);
-int		process_expanded_token(char **exp, int j, char *temp, int has_q);
+int		split_and_add_tokens(char **exp, int j, char *temp, int max);
+int		process_expanded_token(char **exp, int j, char *temp, int has_q, int max);
 char	*get_var_name(char *str, int start);
 int		count_varname_len(char *str, int start);
 
